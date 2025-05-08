@@ -61,7 +61,7 @@ const FixedBanner = () => {
               남음
             </div>
             <button
-              className="rounded-md bg-white p-2 text-xs font-bold text-black md:p-3.5 md:text-sm"
+              className="cursor-pointer rounded-md bg-white p-2 text-xs font-bold text-black md:p-3.5 md:text-sm"
               onClick={handleApplyClick}
             >
               지금 신청하기
