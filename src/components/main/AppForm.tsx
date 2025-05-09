@@ -10,6 +10,7 @@ interface FormErrors {
   age?: string;
   contact?: string;
 }
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const AppForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -82,7 +83,7 @@ const AppForm = () => {
     }
 
     try {
-      const response = await fetch("/api/submit-form", {
+      const response = await fetch(`${apiUrl}/api/submit-form`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,18 +91,12 @@ const AppForm = () => {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
-      if (result.success) {
-        // 성공 처리
+      if (response.ok) {
         formRef.current?.reset();
         setIsPrivacyAgree(false);
         setIsMarketingAgree(false);
         setErrors({});
         toast.success("신청이 완료되었습니다.");
-      } else {
-        // 에러 처리
-        console.error("Form submission failed");
-        toast.error("신청중 오류가 발생했습니다. 다시 시도 해주세요.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
