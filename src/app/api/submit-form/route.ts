@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { doc } from "@/utils/google-sheet";
 import type { FormData } from "@/utils/google-sheet";
 
+export const runtime = "edge";
+
 export async function POST(request: Request) {
   try {
     const data: FormData = await request.json();
