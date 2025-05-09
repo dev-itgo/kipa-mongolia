@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
-import TextInputBox from "../form/TextInputBox";
-import PolicyModal from "../modal/PolicyModal";
-import { Checkbox, Label, Toast, ToastToggle } from "flowbite-react";
+import { useState, useRef } from "react";
+import { toast } from "react-hot-toast";
+import { Checkbox, Label } from "flowbite-react";
+import TextInputBox from "@/components/form/TextInputBox";
+import PolicyModal from "@/components/modal/PolicyModal";
 
 interface FormErrors {
   name?: string;
@@ -11,12 +12,13 @@ interface FormErrors {
 }
 
 const AppForm = () => {
+  const formRef = useRef<HTMLFormElement>(null);
   const [isPrivacyAgree, setIsPrivacyAgree] = useState(false);
   const [isMarketingAgree, setIsMarketingAgree] = useState(false);
   const [isOpenPolicyModal, setIsOpenPolicyModal] = useState(false);
   const [isOpenMarketingModal, setIsOpenMarketingModal] = useState(false);
-  const [showToast, setShowToast] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateName = (name: string): string | undefined => {
     if (!name) return "이름을 입력해주세요.";
@@ -47,6 +49,68 @@ const AppForm = () => {
     return undefined;
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!isPrivacyAgree || !isMarketingAgree) {
+      toast.error("모든 약관에 동의해주세요.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name") as string,
+      age: formData.get("age") as string,
+      contact: formData.get("contact") as string,
+      etc: formData.get("etc") as string,
+    };
+
+    // Validate all fields
+    const newErrors: FormErrors = {};
+    newErrors.name = validateName(data.name);
+    newErrors.age = validateAge(data.age);
+    newErrors.contact = validateContact(data.contact);
+
+    setErrors(newErrors);
+
+    // If there are any errors, don't submit
+    if (Object.values(newErrors).some((error) => error)) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/submit-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        // 성공 처리
+        formRef.current?.reset();
+        setIsPrivacyAgree(false);
+        setIsMarketingAgree(false);
+        setErrors({});
+        toast.success("신청이 완료되었습니다.");
+      } else {
+        // 에러 처리
+        console.error("Form submission failed");
+        toast.error("신청중 오류가 발생했습니다. 다시 시도 해주세요.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("신청중 오류가 발생했습니다. 다시 시도 해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleMasterCheck = (checked: boolean) => {
     setIsPrivacyAgree(checked);
     setIsMarketingAgree(checked);
@@ -72,32 +136,6 @@ const AppForm = () => {
     setIsOpenMarketingModal(false);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!isPrivacyAgree || !isMarketingAgree) {
-      setShowToast(true);
-      return;
-    }
-
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-
-    // Validate all fields
-    const newErrors: FormErrors = {};
-    newErrors.name = validateName(data.name as string);
-    newErrors.age = validateAge(data.age as string);
-    newErrors.contact = validateContact(data.contact as string);
-
-    setErrors(newErrors);
-
-    // If there are any errors, don't submit
-    if (Object.values(newErrors).some((error) => error)) {
-      return;
-    }
-
-    console.log("Form data:", data);
-  };
-
   return (
     <aside
       className="mb-6 flex-1 md:sticky md:top-17 md:max-w-[340px]"
@@ -106,7 +144,7 @@ const AppForm = () => {
       <h3 className="mb-4 text-2xl font-bold break-keep">
         지금 신청 하면 사은품 증정 및 참가비 무료
       </h3>
-      <form action="" onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <TextInputBox
           type="text"
           label="이름"
@@ -195,9 +233,12 @@ const AppForm = () => {
         </div>
         <button
           type="submit"
-          className="mt-6 block w-full cursor-pointer bg-white p-3 font-bold text-black"
+          disabled={isSubmitting}
+          className={`mt-6 block w-full cursor-pointer bg-white p-3 font-bold text-black ${
+            isSubmitting ? "cursor-not-allowed opacity-50" : ""
+          }`}
         >
-          신청하기
+          {isSubmitting ? "신청 중..." : "신청하기"}
         </button>
       </form>
       <PolicyModal
@@ -218,12 +259,6 @@ const AppForm = () => {
       >
         <p className="text-black">마케팅 정보 수신 동의</p>
       </PolicyModal>
-      {showToast && (
-        <Toast>
-          <div className="text-sm font-normal">모든 약관에 동의해주세요.</div>
-          <ToastToggle onDismiss={() => setShowToast(false)} />
-        </Toast>
-      )}
     </aside>
   );
 };
