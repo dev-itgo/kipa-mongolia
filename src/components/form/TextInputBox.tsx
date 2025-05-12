@@ -28,7 +28,7 @@ const TextInputBox = ({
         id={name}
         name={name}
         placeholder={placeholder}
-        className={`block h-12 w-full bg-[#181818] px-4 focus:ring-blue-500 ${
+        className={`block h-12 w-full bg-[#181818] px-4 text-[16px] focus:ring-blue-500 ${
           error ? "border border-red-500" : ""
         }`}
         required={required}

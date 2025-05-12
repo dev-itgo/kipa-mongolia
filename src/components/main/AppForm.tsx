@@ -1,106 +1,95 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Checkbox, Label } from "flowbite-react";
 import TextInputBox from "@/components/form/TextInputBox";
 import PolicyModal from "@/components/modal/PolicyModal";
+import { useRouter } from "next/navigation";
 
-interface FormErrors {
-  name?: string;
-  age?: string;
-  contact?: string;
+interface FormData {
+  name: string;
+  age: string;
+  contact: string;
+  etc?: string;
 }
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const AppForm = () => {
-  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
   const [isPrivacyAgree, setIsPrivacyAgree] = useState(false);
   const [isMarketingAgree, setIsMarketingAgree] = useState(false);
   const [isOpenPolicyModal, setIsOpenPolicyModal] = useState(false);
   const [isOpenMarketingModal, setIsOpenMarketingModal] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
+    {},
+  );
 
-  const validateName = (name: string): string | undefined => {
-    if (!name) return "이름을 입력해주세요.";
-    if (!/^[^0-9]{2,50}$/.test(name)) {
-      return "이름은 2-50자의 문자만 입력 가능합니다. (숫자 제외)";
+  const validateForm = (data: FormData): boolean => {
+    const newErrors: Partial<Record<keyof FormData, string>> = {};
+
+    // Validate name
+    if (!data.name) {
+      newErrors.name = "이름을 입력해주세요.";
+    } else if (!/^[^0-9]{2,50}$/.test(data.name)) {
+      newErrors.name = "이름은 2-50자의 문자만 입력 가능합니다. (숫자 제외)";
     }
-    return undefined;
-  };
 
-  const validateAge = (age: string): string | undefined => {
-    if (!age) return "나이를 입력해주세요.";
-    const numAge = parseInt(age);
-    if (isNaN(numAge) || numAge < 1 || numAge > 100) {
-      return "나이는 1-100 사이의 숫자만 입력 가능합니다.";
+    // Validate age
+    if (!data.age) {
+      newErrors.age = "나이를 입력해주세요.";
+    } else {
+      const numAge = parseInt(data.age);
+      if (isNaN(numAge) || numAge < 1 || numAge > 100) {
+        newErrors.age = "나이는 1-100 사이의 숫자만 입력 가능합니다.";
+      }
     }
-    return undefined;
-  };
 
-  const validateContact = (contact: string): string | undefined => {
-    if (!contact) return "연락처를 입력해주세요.";
-    // 전화번호 형식 (+국가코드-번호) 또는 LINE ID 형식
-    if (
-      !/^\+?[0-9-]{4,20}$/.test(contact) &&
-      !/^[a-zA-Z0-9._-]{4,20}$/.test(contact)
+    // Validate contact
+    if (!data.contact) {
+      newErrors.contact = "연락처를 입력해주세요.";
+    } else if (
+      !/^\+?[0-9-]{4,20}$/.test(data.contact) &&
+      !/^[a-zA-Z0-9._-]{4,20}$/.test(data.contact)
     ) {
-      return "올바른 전화번호 형식 또는 LINE ID를 입력해주세요.";
+      newErrors.contact = "올바른 전화번호 형식 또는 LINE ID를 입력해주세요.";
     }
-    return undefined;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     if (!isPrivacyAgree || !isMarketingAgree) {
       toast.error("모든 약관에 동의해주세요.");
+      setIsSubmitting(false);
       return;
     }
 
-    setIsSubmitting(true);
-
     const formData = new FormData(e.currentTarget);
-    const data = {
+    const data: FormData = {
       name: formData.get("name") as string,
       age: formData.get("age") as string,
       contact: formData.get("contact") as string,
       etc: formData.get("etc") as string,
     };
 
-    // Validate all fields
-    const newErrors: FormErrors = {};
-    newErrors.name = validateName(data.name);
-    newErrors.age = validateAge(data.age);
-    newErrors.contact = validateContact(data.contact);
-
-    setErrors(newErrors);
-
-    // If there are any errors, don't submit
-    if (Object.values(newErrors).some((error) => error)) {
+    if (!validateForm(data)) {
       setIsSubmitting(false);
       return;
     }
 
     try {
-      const response = await fetch(`${apiUrl}/api/submit-form`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      // Store form data in sessionStorage
+      sessionStorage.setItem("formData", JSON.stringify(data));
 
-      if (response.ok) {
-        formRef.current?.reset();
-        setIsPrivacyAgree(false);
-        setIsMarketingAgree(false);
-        setErrors({});
-        toast.success("신청이 완료되었습니다.");
-      }
+      // Redirect to payment page
+      router.push("/payment");
     } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("신청중 오류가 발생했습니다. 다시 시도 해주세요.");
+      console.error("Error redirecting to payment:", error);
+      toast.error("페이지 이동 중 오류가 발생했습니다. 다시 시도 해주세요.");
     } finally {
       setIsSubmitting(false);
     }
@@ -139,7 +128,7 @@ const AppForm = () => {
       <h3 className="mb-4 text-2xl font-bold break-keep">
         지금 신청 하면 사은품 증정 및 참가비 무료
       </h3>
-      <form ref={formRef} onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <TextInputBox
           type="text"
           label="이름"
