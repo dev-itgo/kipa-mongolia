@@ -1,11 +1,15 @@
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 
-const env = process.env.NODE_ENV;
-const isDev = env === "development";
+// 실제 런칭 환경
+// const env = process.env.NODE_ENV;
+// const isDev = env === "development";
 
-export const base = isDev
-  ? "https://api-m.sandbox.paypal.com"
-  : "https://api-m.paypal.com";
+// export const base = isDev
+//   ? "https://api-m.sandbox.paypal.com"
+//   : "https://api-m.paypal.com";
+
+// 테스트 환경
+export const base = "https://api-m.sandbox.paypal.com";
 
 export const generateAccessToken = async () => {
   if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
