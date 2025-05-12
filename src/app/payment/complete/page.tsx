@@ -18,27 +18,88 @@ const PaymentCompletePage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Get form data and paypal data from sessionStorage
     const storedFormData = sessionStorage.getItem("formData");
     const storedPaypalData = sessionStorage.getItem("paypalData");
 
     if (!storedFormData || !storedPaypalData) {
-      // If no data exists, redirect to home page
       router.push("/");
       return;
     }
 
-    try {
-      const parsedFormData = JSON.parse(storedFormData);
-      const parsedPaypalData = JSON.parse(storedPaypalData);
-      setFormData(parsedFormData);
-      setPaypalData(parsedPaypalData);
-    } catch (error) {
-      console.error("Error parsing data:", error);
-      router.push("/");
-    } finally {
-      setIsLoading(false);
-    }
+    let popstateRegistered = false;
+    let handlePopState: (() => void) | null = null;
+
+    const checkStatusAndProceed = async () => {
+      try {
+        const parsedFormData = JSON.parse(storedFormData);
+        const parsedPaypalData = JSON.parse(storedPaypalData);
+
+        // 결제 상태 체크
+        const orderID = parsedPaypalData?.data?.id;
+        if (!orderID) {
+          router.replace("/");
+          return;
+        }
+
+        // 최대 3번까지 재시도
+        let retryCount = 0;
+        let paymentStatus = null;
+
+        while (retryCount < 3) {
+          try {
+            const res = await fetch(
+              `/api/paypal/order/status?orderId=${orderID}`,
+            );
+            const data = await res.json();
+            paymentStatus = data.status;
+
+            if (paymentStatus === "COMPLETED") {
+              break;
+            }
+
+            // COMPLETED가 아닌 경우 잠시 대기 후 재시도
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            retryCount++;
+          } catch (error) {
+            console.error(`Retry ${retryCount + 1} failed:`, error);
+            retryCount++;
+          }
+        }
+
+        if (paymentStatus !== "COMPLETED") {
+          router.replace("/payment");
+          return;
+        }
+
+        // 결제가 완료된 경우에만 데이터 설정
+        setFormData(parsedFormData);
+        setPaypalData(parsedPaypalData);
+
+        // popstate 이벤트 리스너 설정
+        handlePopState = () => {
+          router.replace("/");
+        };
+        window.addEventListener("popstate", handlePopState);
+        popstateRegistered = true;
+
+        // 모든 처리가 완료된 후에만 세션 스토리지 정리
+        sessionStorage.removeItem("formData");
+        sessionStorage.removeItem("paypalData");
+      } catch (error) {
+        console.error("Error parsing data:", error);
+        router.push("/");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkStatusAndProceed();
+
+    return () => {
+      if (popstateRegistered && handlePopState) {
+        window.removeEventListener("popstate", handlePopState);
+      }
+    };
   }, [router]);
 
   if (isLoading) {
