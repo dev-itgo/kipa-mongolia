@@ -28,6 +28,13 @@ const PaymentPage = () => {
       return;
     }
 
+    // Check if there's an existing submission
+    const existingUid = sessionStorage.getItem("submissionUid");
+    if (existingUid) {
+      router.push("/payment/complete");
+      return;
+    }
+
     try {
       const parsedData = JSON.parse(storedData);
       setFormData(parsedData);
@@ -62,6 +69,10 @@ const PaymentPage = () => {
     }
 
     setIsProcessing(true);
+    // Generate a unique ID for this submission
+    const submissionUid = crypto.randomUUID();
+    sessionStorage.setItem("submissionUid", submissionUid);
+
     await postForm(formData);
     toast.success("신청이 완료되었습니다.", {
       duration: 5000,
