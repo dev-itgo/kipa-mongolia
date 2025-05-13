@@ -1,10 +1,31 @@
 "use client";
 import { scrollToAppForm } from "@/utils/scroll";
 import { useEffect, useState, useCallback, useRef } from "react";
+import { calculateTimeRemaining, END_DATE } from "@/utils/countdown";
 
 const FixedBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const initialTime = calculateTimeRemaining(END_DATE);
+    setTimeLeft(initialTime);
+
+    const timer = setInterval(() => {
+      const time = calculateTimeRemaining(END_DATE);
+      setTimeLeft(time);
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
@@ -50,13 +71,13 @@ const FixedBanner = () => {
             <div className="flex items-center gap-1 text-xs">
               마감까지
               <span className="inline-block rounded-sm bg-black p-1 text-[#00B8FF]">
-                0일
+                {timeLeft.days}일
               </span>
               <span className="inline-block rounded-sm bg-black p-1 text-[#00B8FF]">
-                5시간
+                {timeLeft.hours}시간
               </span>
               <span className="inline-block rounded-sm bg-black p-1 text-[#00B8FF]">
-                47분
+                {timeLeft.minutes}분
               </span>
               남음
             </div>
