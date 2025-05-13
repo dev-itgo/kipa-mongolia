@@ -1,19 +1,22 @@
 "use client";
-import Paypal from "@/components/payment/Paypal";
+// import Paypal from "@/components/payment/Paypal";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-interface FormData {
-  name: string;
-  age: string;
-  contact: string;
-  etc?: string;
-}
+import toast from "react-hot-toast";
+import { Checkbox, Label } from "flowbite-react";
+import PolicyModal from "@/components/modal/PolicyModal";
+import { FormData } from "@/components/main/AppForm";
+import postForm from "@/utils/postForm";
 
 const PaymentPage = () => {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPrivacyAgree, setIsPrivacyAgree] = useState(false);
+  const [isMarketingAgree, setIsMarketingAgree] = useState(false);
+  const [isOpenPolicyModal, setIsOpenPolicyModal] = useState(false);
+  const [isOpenMarketingModal, setIsOpenMarketingModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
@@ -42,11 +45,60 @@ const PaymentPage = () => {
     }
   }, [isProcessing]);
 
+  const handleBack = () => {
+    router.back();
+    sessionStorage.removeItem("formData");
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formData) {
+      toast.error("데이터를 불러오는데 실패했습니다.");
+      return;
+    }
+    if (!isPrivacyAgree || !isMarketingAgree) {
+      toast.error("모든 약관에 동의해주세요.");
+      return;
+    }
+
+    setIsProcessing(true);
+    await postForm(formData);
+    toast.success("신청이 완료되었습니다.", {
+      duration: 5000,
+    });
+    router.push("/payment/complete");
+  };
+
+  const handlePrivacyAgree = () => {
+    setIsPrivacyAgree(true);
+    setIsOpenPolicyModal(false);
+  };
+
+  const handleMarketingAgree = () => {
+    setIsMarketingAgree(true);
+    setIsOpenMarketingModal(false);
+  };
+
+  const handlePrivacyReject = () => {
+    setIsPrivacyAgree(false);
+    setIsOpenPolicyModal(false);
+  };
+
+  const handleMarketingReject = () => {
+    setIsMarketingAgree(false);
+    setIsOpenMarketingModal(false);
+  };
+
+  const handleMasterCheck = (checked: boolean) => {
+    setIsPrivacyAgree(checked);
+    setIsMarketingAgree(checked);
+  };
+
   if (isLoading) {
     return (
       <div className="container mx-auto max-w-md">
         <div className="flex flex-col gap-10 p-4">
-          <h1 className="text-2xl font-bold">결제 페이지</h1>
+          <h1 className="text-2xl font-bold">신청 페이지</h1>
           <div className="rounded-lg bg-[#181818] p-6">
             <div className="animate-pulse space-y-4">
               <div className="h-4 w-3/4 rounded bg-gray-700"></div>
@@ -95,7 +147,6 @@ const PaymentPage = () => {
     <div className="container mx-auto max-w-md">
       <div className="mb-5 flex flex-col gap-10 p-4">
         <h1 className="text-2xl font-bold">결제 페이지</h1>
-
         <div className="rounded-lg bg-[#181818] p-6">
           <h2 className="mb-4 text-xl font-bold">신청 정보</h2>
           <div className="space-y-4">
@@ -108,15 +159,104 @@ const PaymentPage = () => {
             <div>
               <span className="font-bold">연락처:</span> {formData.contact}
             </div>
-            {formData.etc && (
-              <div>
-                <span className="font-bold">기타 문의사항:</span> {formData.etc}
-              </div>
-            )}
+            <div>
+              <span className="font-bold">상담 요청 시간:</span>{" "}
+              {formData.time.join(", ")}
+            </div>
           </div>
         </div>
-        <Paypal onProcessingChange={setIsProcessing} />
       </div>
+      <div className="px-4">
+        <div className="mt-6 flex items-center">
+          <Checkbox
+            id="master-check"
+            className="bg-transparent"
+            checked={isPrivacyAgree && isMarketingAgree}
+            onChange={(e) => handleMasterCheck(e.target.checked)}
+          />
+          <Label htmlFor="master-check" className="ml-2 text-[15px] text-white">
+            전체 이용약관에 동의
+          </Label>
+        </div>
+        <div className="mt-4 space-y-3 bg-[#181818] p-4">
+          <div className="flex items-center">
+            <Checkbox
+              id="privacy-check"
+              className="bg-transparent"
+              checked={isPrivacyAgree}
+              onChange={(e) => setIsPrivacyAgree(e.target.checked)}
+              required
+            />
+            <Label htmlFor="privacy-check" className="ml-2 text-sm text-white">
+              <span className="text-xs">개인정보 취급방침 동의</span>
+              <span className="text-[10px] text-gray-400"> (필수)</span>
+            </Label>
+            <span
+              className="ml-2 cursor-pointer text-xs text-gray-400"
+              onClick={() => setIsOpenPolicyModal(true)}
+            >
+              자세히 보기
+            </span>
+          </div>
+
+          <div className="flex items-center">
+            <Checkbox
+              id="marketing-check"
+              className="bg-transparent"
+              checked={isMarketingAgree}
+              onChange={(e) => setIsMarketingAgree(e.target.checked)}
+              required
+            />
+            <Label
+              htmlFor="marketing-check"
+              className="ml-2 text-sm text-white"
+            >
+              <span className="text-xs">마케팅 정보 수신 동의</span>
+              <span className="text-[10px] text-gray-400"> (필수)</span>
+            </Label>
+            <span
+              className="ml-2 cursor-pointer text-xs text-gray-400"
+              onClick={() => setIsOpenMarketingModal(true)}
+            >
+              자세히 보기
+            </span>
+          </div>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <button
+            type="button"
+            className="mt-6 block w-full cursor-pointer border-1 border-white p-3 text-center font-bold"
+            onClick={handleBack}
+          >
+            다시 작성하기
+          </button>
+          <button
+            type="submit"
+            className="mt-3 block w-full cursor-pointer bg-white p-3 font-bold text-black"
+          >
+            신청하기
+          </button>
+        </form>
+        <PolicyModal
+          title="개인정보 취급방침"
+          open={isOpenPolicyModal}
+          setOpen={setIsOpenPolicyModal}
+          onAgree={handlePrivacyAgree}
+          onReject={handlePrivacyReject}
+        >
+          <p className="text-black">개인정보 취급방침</p>
+        </PolicyModal>
+        <PolicyModal
+          title="마케팅 정보 수신 동의"
+          open={isOpenMarketingModal}
+          setOpen={setIsOpenMarketingModal}
+          onAgree={handleMarketingAgree}
+          onReject={handleMarketingReject}
+        >
+          <p className="text-black">마케팅 정보 수신 동의</p>
+        </PolicyModal>
+      </div>
+      {/* <Paypal onProcessingChange={setIsProcessing} /> */}
     </div>
   );
 };

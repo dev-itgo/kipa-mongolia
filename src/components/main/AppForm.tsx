@@ -1,28 +1,25 @@
 "use client";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
-import { Checkbox, Label } from "flowbite-react";
-import TextInputBox from "@/components/form/TextInputBox";
-import PolicyModal from "@/components/modal/PolicyModal";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import TextInputBox from "@/components/form/TextInputBox";
+import SelectBox from "../form/SelectBox";
+import { IoIosClose } from "react-icons/io";
 
-interface FormData {
+export interface FormData {
   name: string;
   age: string;
   contact: string;
-  etc?: string;
+  time: string[];
 }
 
 const AppForm = () => {
   const router = useRouter();
-  const [isPrivacyAgree, setIsPrivacyAgree] = useState(false);
-  const [isMarketingAgree, setIsMarketingAgree] = useState(false);
-  const [isOpenPolicyModal, setIsOpenPolicyModal] = useState(false);
-  const [isOpenMarketingModal, setIsOpenMarketingModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
     {},
   );
+  const [times, setTimes] = useState<string[]>([]);
 
   const validateForm = (data: FormData): boolean => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
@@ -54,26 +51,35 @@ const AppForm = () => {
       newErrors.contact = "올바른 전화번호 형식 또는 LINE ID를 입력해주세요.";
     }
 
+    if (times.length === 0) {
+      newErrors.time = "상담 요청 시간을 선택해주세요.";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedTime = e.target.value;
+    if (selectedTime !== "") {
+      setTimes([...times, selectedTime]);
+    }
+  };
+
+  const handleDeleteTime = (timeToDelete: string) => {
+    setTimes(times.filter((time) => time !== timeToDelete));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (!isPrivacyAgree || !isMarketingAgree) {
-      toast.error("모든 약관에 동의해주세요.");
-      setIsSubmitting(false);
-      return;
-    }
-
     const formData = new FormData(e.currentTarget);
     const data: FormData = {
       name: formData.get("name") as string,
       age: formData.get("age") as string,
       contact: formData.get("contact") as string,
-      etc: formData.get("etc") as string,
+      time: times,
     };
 
     if (!validateForm(data)) {
@@ -93,31 +99,6 @@ const AppForm = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleMasterCheck = (checked: boolean) => {
-    setIsPrivacyAgree(checked);
-    setIsMarketingAgree(checked);
-  };
-
-  const handlePrivacyAgree = () => {
-    setIsPrivacyAgree(true);
-    setIsOpenPolicyModal(false);
-  };
-
-  const handleMarketingAgree = () => {
-    setIsMarketingAgree(true);
-    setIsOpenMarketingModal(false);
-  };
-
-  const handlePrivacyReject = () => {
-    setIsPrivacyAgree(false);
-    setIsOpenPolicyModal(false);
-  };
-
-  const handleMarketingReject = () => {
-    setIsMarketingAgree(false);
-    setIsOpenMarketingModal(false);
   };
 
   return (
@@ -142,79 +123,50 @@ const AppForm = () => {
           label="나이"
           name="age"
           placeholder="나이를 입력해주세요."
+          min={2}
+          max={100}
           required
           error={errors.age}
         />
         <TextInputBox
           type="text"
-          label="LINE ID or 연락처"
+          label="바이버 & 연락처"
           name="contact"
-          placeholder="LINE ID or 연락처"
+          placeholder="바이버 & 연락처"
           required
           error={errors.contact}
         />
-        <TextInputBox
+        {/* <TextInputBox
           type="text"
           label="기타 문의사항"
           name="etc"
           placeholder="문의사항을 입력해주세요."
+        /> */}
+        <SelectBox
+          label="상담 요청 시간"
+          name="time"
+          defaultValue=""
+          error={errors.time}
+          onChange={handleTimeChange}
         />
-
-        <div className="mt-6 flex items-center">
-          <Checkbox
-            id="master-check"
-            className="bg-transparent"
-            checked={isPrivacyAgree && isMarketingAgree}
-            onChange={(e) => handleMasterCheck(e.target.checked)}
-          />
-          <Label htmlFor="master-check" className="ml-2 text-[15px] text-white">
-            전체 이용약관에 동의
-          </Label>
+        <div className="mt-2 space-y-2">
+          {times.map((time) => (
+            <div
+              key={time}
+              className="flex items-center justify-between rounded bg-gray-800 p-2"
+            >
+              <span>{time}</span>
+              <button
+                type="button"
+                onClick={() => handleDeleteTime(time)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <IoIosClose size={24} />
+              </button>
+            </div>
+          ))}
         </div>
-        <div className="mt-4 space-y-3 bg-[#181818] p-4">
-          <div className="flex items-center">
-            <Checkbox
-              id="privacy-check"
-              className="bg-transparent"
-              checked={isPrivacyAgree}
-              onChange={(e) => setIsPrivacyAgree(e.target.checked)}
-              required
-            />
-            <Label htmlFor="privacy-check" className="ml-2 text-sm text-white">
-              <span className="text-xs">개인정보 취급방침 동의</span>
-              <span className="text-[10px] text-gray-400"> (필수)</span>
-            </Label>
-            <span
-              className="ml-2 cursor-pointer text-xs text-gray-400"
-              onClick={() => setIsOpenPolicyModal(true)}
-            >
-              자세히 보기
-            </span>
-          </div>
 
-          <div className="flex items-center">
-            <Checkbox
-              id="marketing-check"
-              className="bg-transparent"
-              checked={isMarketingAgree}
-              onChange={(e) => setIsMarketingAgree(e.target.checked)}
-              required
-            />
-            <Label
-              htmlFor="marketing-check"
-              className="ml-2 text-sm text-white"
-            >
-              <span className="text-xs">마케팅 정보 수신 동의</span>
-              <span className="text-[10px] text-gray-400"> (필수)</span>
-            </Label>
-            <span
-              className="ml-2 cursor-pointer text-xs text-gray-400"
-              onClick={() => setIsOpenMarketingModal(true)}
-            >
-              자세히 보기
-            </span>
-          </div>
-        </div>
         <button
           type="submit"
           disabled={isSubmitting}
@@ -225,24 +177,6 @@ const AppForm = () => {
           {isSubmitting ? "신청 중..." : "신청하기"}
         </button>
       </form>
-      <PolicyModal
-        title="개인정보 취급방침"
-        open={isOpenPolicyModal}
-        setOpen={setIsOpenPolicyModal}
-        onAgree={handlePrivacyAgree}
-        onReject={handlePrivacyReject}
-      >
-        <p className="text-black">개인정보 취급방침</p>
-      </PolicyModal>
-      <PolicyModal
-        title="마케팅 정보 수신 동의"
-        open={isOpenMarketingModal}
-        setOpen={setIsOpenMarketingModal}
-        onAgree={handleMarketingAgree}
-        onReject={handleMarketingReject}
-      >
-        <p className="text-black">마케팅 정보 수신 동의</p>
-      </PolicyModal>
     </aside>
   );
 };
