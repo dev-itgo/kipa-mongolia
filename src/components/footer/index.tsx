@@ -3,6 +3,8 @@ import { SiYoutube } from "react-icons/si";
 import { SiInstagram } from "react-icons/si";
 import { SiFacebook } from "react-icons/si";
 import { SiNaver } from "react-icons/si";
+import PrivacyLink from "./PrivacyLink";
+import TermsLink from "./TermsLink";
 
 const Footer = () => {
   return (
@@ -15,10 +17,10 @@ const Footer = () => {
           <div className="text-sm text-[#F2F2F2]">
             <ul className="flex flex-wrap gap-x-2 gap-y-1">
               <li>
-                <a href="">Terms of Use</a>
+                <TermsLink />
               </li>
               <li>
-                <a href="">Privacy Statement</a>
+                <PrivacyLink />
               </li>
               <li>
                 <a href="">Company Info</a>
@@ -65,20 +67,23 @@ const Footer = () => {
         </div>
       </div>
       <div className="text-xs text-[#F2F2F2]">
-        <ul className="flex flex-wrap gap-2">
+        <ul className="mb-1 flex flex-wrap gap-2">
           <li>대표 : 이영식 &nbsp;&nbsp;|</li>
           <li>개인정보보호책임자 : 김재민&nbsp;&nbsp;|</li>
           <li>사업자등록번호 : 533-86-03215</li>
         </ul>
-        <ul className="flex flex-wrap gap-2">
-          <li>통신판매업 신고번호 : 제2023-인천연수구-2044호&nbsp;&nbsp;|</li>
+        <ul className="mb-1 flex flex-wrap gap-2">
+          <li>통신판매업 신고번호 : 제2025-경기안산-2005호&nbsp;&nbsp;|</li>
           <li>
-            주소 : #317, Bldg D, 158, Harmony-ro, Yeonsu-gu, Incheon, Korea
+            주소 : 203-80, 2F, 54 Gwangdeokseo-ro, Danwon-gu, Ansan-si,
+            Gyeonggi-do
           </li>
         </ul>
-        <ul className="flex flex-wrap gap-2">
-          <li>TEL : 070-8065-3034&nbsp;&nbsp;|</li>
-          <li>E-MAIL : info@it-go.kr</li>
+        <ul className="mb-1 flex flex-wrap gap-2">
+          <li>TEL : +82-70-8065-3034&nbsp;&nbsp;|</li>
+          <li>
+            E-MAIL : <a href="mailto:info@it-go.kr">info@it-go.kr</a>
+          </li>
         </ul>
       </div>
       <div className="text-xs text-[#F2F2F2]">

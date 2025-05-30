@@ -7,6 +7,8 @@ import { Checkbox, Label } from "flowbite-react";
 import PolicyModal from "@/components/modal/PolicyModal";
 import { FormData } from "@/components/main/AppForm";
 import postForm from "@/utils/postForm";
+import Privacy from "@/components/policy/Privacy";
+import Marketing from "@/components/policy/Marketing";
 
 const PaymentPage = () => {
   const router = useRouter();
@@ -255,7 +257,7 @@ const PaymentPage = () => {
           onAgree={handlePrivacyAgree}
           onReject={handlePrivacyReject}
         >
-          <p className="text-black">개인정보 취급방침</p>
+          <Privacy />
         </PolicyModal>
         <PolicyModal
           title="마케팅 정보 수신 동의"
@@ -264,7 +266,7 @@ const PaymentPage = () => {
           onAgree={handleMarketingAgree}
           onReject={handleMarketingReject}
         >
-          <p className="text-black">마케팅 정보 수신 동의</p>
+          <Marketing />
         </PolicyModal>
       </div>
       {/* <Paypal onProcessingChange={setIsProcessing} /> */}

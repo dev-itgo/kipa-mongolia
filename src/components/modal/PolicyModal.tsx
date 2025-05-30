@@ -14,6 +14,7 @@ type PolicyModalProps = PropsWithChildren<{
   setOpen: (open: boolean) => void;
   onAgree: () => void;
   onReject: () => void;
+  isFooter?: boolean;
 }>;
 
 const PolicyModal = ({
@@ -23,17 +24,20 @@ const PolicyModal = ({
   children,
   onAgree,
   onReject,
+  isFooter = false,
 }: PolicyModalProps) => {
   return (
     <Modal show={open} onClose={() => setOpen(false)}>
       <ModalHeader>{title}</ModalHeader>
       <ModalBody>{children}</ModalBody>
-      <ModalFooter>
-        <Button onClick={onAgree}>동의</Button>
-        <Button color="gray" onClick={onReject}>
-          거절
-        </Button>
-      </ModalFooter>
+      {!isFooter && (
+        <ModalFooter>
+          <Button onClick={onAgree}>동의</Button>
+          <Button color="gray" onClick={onReject}>
+            거절
+          </Button>
+        </ModalFooter>
+      )}
     </Modal>
   );
 };

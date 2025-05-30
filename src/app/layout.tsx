@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR, Montserrat } from "next/font/google";
-import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import ToastProvider from "@/components/providers/ToastProvider";
 
 const notoSansKR = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
@@ -36,7 +36,7 @@ export default function RootLayout({
       <body
         className={`${notoSansKR.variable} ${montserrat.variable} antialiased`}
       >
-        <Toaster position="bottom-center" />
+        <ToastProvider />
         {children}
       </body>
     </html>
