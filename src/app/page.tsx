@@ -9,6 +9,7 @@ import MainPoints from "@/components/main/MainPoints";
 import MainDoctors from "@/components/main/MainDoctors";
 import MainFaq from "@/components/main/MainFaq";
 import MainReviews from "@/components/main/MainReviews";
+
 export default function Home() {
   return (
     <div className="pt-14 pb-40 md:pt-[68px] md:pb-24">

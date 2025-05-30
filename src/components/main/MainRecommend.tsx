@@ -39,7 +39,7 @@ const MainRecommend = () => {
       <h3 className="mb-6 text-center text-[16px] font-bold md:text-lg">
         이런 분에게 추천합니다
       </h3>
-      <ul className="flex flex-col gap-2 md:flex-row">
+      <ul className="grid grid-cols-1 gap-2 lg:grid-cols-3">
         {MainRecommendItemList.map((item, index) => (
           <MainRecommendItem
             key={`main-recommend-item-${index}`}
