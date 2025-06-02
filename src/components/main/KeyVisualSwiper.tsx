@@ -5,11 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 const images = [
-  "https://fastly.picsum.photos/id/805/1440/1440.jpg?hmac=gP0jIOEu9npER7tI7uMBtzmctbQFAsUfd2d3j5FvRx8",
-  "https://fastly.picsum.photos/id/688/1440/1440.jpg?hmac=-qK3XoBqyUeaZieAKFZQ4piNcEvW4okF6PUNekUwvbM",
-  "https://fastly.picsum.photos/id/961/1440/1440.jpg?hmac=5rUYg78LsEA6jmroIj9mHf_6HYO9zr2dEnf0pqZBwhw",
-  "https://fastly.picsum.photos/id/435/1440/1440.jpg?hmac=xBssH7rVwaIpTvpH8lRV7jNvdGSK_IaRX2Ya3nQ3tTE",
-  "https://fastly.picsum.photos/id/204/1440/1440.jpg?hmac=xLolIe8tCu5LAGFT5jcpEVLz7vyGtjbXcg5MuGKGtzc",
+  "/keyvisual/kipa-main-kv01.webp",
+  "/keyvisual/kipa-main-kv02.webp",
+  "/keyvisual/kipa-main-kv03.webp",
+  "/keyvisual/kipa-main-kv04.webp",
+  "/keyvisual/kipa-main-kv05.webp",
 ];
 
 const KeyVisualSwiper = () => {
@@ -22,7 +22,7 @@ const KeyVisualSwiper = () => {
     >
       {images.map((image, index) => (
         <SwiperSlide key={index} data-swiper-parallax-x="-23%">
-          <div className="h-[480px] overflow-hidden">
+          <div className="aspect-[4/3] overflow-hidden md:aspect-auto md:h-[480px]">
             <Image
               src={image}
               alt="Key Visual"

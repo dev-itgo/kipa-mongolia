@@ -16,7 +16,7 @@ const MainReviews = () => {
         <div className="col-span-3 aspect-[258/160] bg-slate-500 md:col-span-1">
           <MainVideo
             title="KIPA 2024 TOKYO"
-            videoUrl="https://www.youtube.com/embed/"
+            videoUrl="https://www.youtube.com/embed/1XxH-j_srhk"
           />
         </div>
         <div className="col-span-3 md:col-span-2">

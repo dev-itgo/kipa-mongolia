@@ -18,8 +18,16 @@ const MainDoctorsProfile = ({
 }: MainDoctorsProfileProps) => {
   return (
     <figure className="pb-6">
-      <div className="aspect-[260/350] overflow-hidden rounded-lg bg-slate-300">
-        {src && <Image src={src} alt={name} />}
+      <div className="aspect-square overflow-hidden rounded-lg bg-slate-300">
+        {src && (
+          <Image
+            src={src}
+            width={500}
+            height={500}
+            alt={name}
+            className="w-full"
+          />
+        )}
       </div>
       <figcaption className="flex flex-col gap-1">
         <p className="mt-3 font-bold text-[#f2f2f2]">{hospital}</p>
@@ -41,7 +49,7 @@ const MainDoctors = () => {
           이 상담회를 특별하게 만드는 한국 상위 1% 의료진
         </p>
       </div>
-      <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+      <ul className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-3">
         {DOCTORS.map((doctor, index) => (
           <li key={`doctor-${index}`}>
             <MainDoctorsProfile {...doctor} />

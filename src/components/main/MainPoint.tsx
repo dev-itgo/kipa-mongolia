@@ -1,19 +1,20 @@
-import Image from "next/image";
 import { ReactNode } from "react";
+import { MainPointImage } from "@/data/points";
+import MainPointSwiper from "./MainPointSwiper";
 
 type MainPointProps = {
   count: number;
-  src: string;
+  images: MainPointImage[];
   children: ReactNode;
 };
 
-const MainPoint = ({ count, src, children }: MainPointProps) => {
+const MainPoint = ({ count, images, children }: MainPointProps) => {
   return (
     <div className="mb-24">
       <div className="mx-auto mb-6 w-fit rounded-full border-2 border-[#00B0FB] px-4 py-2 text-center font-bold text-[#00B0FB]">
         Point {count < 10 ? `0${count}` : count}.
       </div>
-      <Image src={src} width={820} height={461} alt="Main point image" />
+      <MainPointSwiper images={images} />
       <div className="mt-8 flex flex-col md:flex-row">{children}</div>
     </div>
   );

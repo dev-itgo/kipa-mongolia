@@ -62,7 +62,7 @@ const FixedBanner = () => {
 
   return (
     <div
-      className={`fixed right-0 bottom-0 left-0 bg-black py-3 transition-transform`}
+      className={`fixed right-0 bottom-0 left-0 z-10 bg-black py-3 transition-transform`}
     >
       <div className="container-2xl">
         <div className="flex flex-col justify-between rounded-md bg-neutral-800 p-2.5 pl-3.5 md:flex-row md:items-center md:p-3">
