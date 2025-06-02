@@ -5,12 +5,16 @@ import { toast } from "react-hot-toast";
 import TextInputBox from "@/components/form/TextInputBox";
 import SelectBox from "../form/SelectBox";
 import { IoIosClose } from "react-icons/io";
+import ConsultCheckbox from "../form/CounsultCheckbox";
 
 export interface FormData {
-  name: string;
-  age: string;
-  contact: string;
   time: string[];
+  name: string;
+  birth: string;
+  contact: string;
+  contact2?: string;
+  consult: string[];
+  etcText?: string;
 }
 
 const AppForm = () => {
@@ -20,6 +24,32 @@ const AppForm = () => {
     {},
   );
   const [times, setTimes] = useState<string[]>([]);
+  const [consult, setConsult] = useState<string[]>([]);
+  const [etcText, setEtcText] = useState<string>("");
+
+  const handleConsultChange = (
+    value: string,
+    checked: boolean,
+    etcText?: string,
+  ) => {
+    if (checked) {
+      // 기타가 이미 있는지 확인
+      const hasEtc = consult.includes("기타: ");
+      if (value === "기타: " && !hasEtc) {
+        setConsult([...consult, value]);
+      } else if (value !== "기타: ") {
+        setConsult([...consult, value]);
+      }
+      if (value === "기타: " && etcText) {
+        setEtcText(etcText);
+      }
+    } else {
+      setConsult(consult.filter((item) => item !== value));
+      if (value === "기타: ") {
+        setEtcText("");
+      }
+    }
+  };
 
   const validateForm = (data: FormData): boolean => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
@@ -32,13 +62,10 @@ const AppForm = () => {
     }
 
     // Validate age
-    if (!data.age) {
-      newErrors.age = "나이를 입력해주세요.";
-    } else {
-      const numAge = parseInt(data.age);
-      if (isNaN(numAge) || numAge < 1 || numAge > 100) {
-        newErrors.age = "나이는 1-100 사이의 숫자만 입력 가능합니다.";
-      }
+    if (!data.birth) {
+      newErrors.birth = "생년월일을 입력해주세요.";
+    } else if (!/^[0-9]{8}$/.test(data.birth)) {
+      newErrors.birth = "생년월일은 8자리의 숫자만 입력 가능합니다.";
     }
 
     // Validate contact
@@ -77,9 +104,11 @@ const AppForm = () => {
     const formData = new FormData(e.currentTarget);
     const data: FormData = {
       name: formData.get("name") as string,
-      age: formData.get("age") as string,
+      birth: formData.get("birth") as string,
       contact: formData.get("contact") as string,
       time: times,
+      consult,
+      etcText,
     };
 
     if (!validateForm(data)) {
@@ -103,10 +132,10 @@ const AppForm = () => {
 
   return (
     <aside
-      className="mb-6 flex-1 md:sticky md:top-17 md:max-w-[340px]"
+      className="mb-6 flex-1 [scrollbar-color:theme(colors.neutral.800)_transparent] [scrollbar-width:thin] xl:sticky xl:top-17 xl:h-[calc(100dvh-164px)] xl:max-w-[340px] xl:overflow-auto [&::-webkit-scrollbar]:w-2.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb:hover]:bg-gray-500 [&::-webkit-scrollbar-track]:bg-transparent"
       id="app-form"
     >
-      <h3 className="mb-4 text-2xl font-bold break-keep">
+      <h3 className="mb-4 text-lg font-bold break-keep">
         지금 신청 하면 사은품 증정 및 참가비 무료
       </h3>
       <form onSubmit={handleSubmit}>
@@ -119,29 +148,28 @@ const AppForm = () => {
           error={errors.name}
         />
         <TextInputBox
-          type="number"
-          label="나이"
-          name="age"
+          type="text"
+          label="생년월일"
+          name="birth"
           placeholder="나이를 입력해주세요."
-          min={2}
-          max={100}
           required
-          error={errors.age}
+          error={errors.birth}
         />
         <TextInputBox
           type="text"
-          label="바이버 & 연락처"
+          label="연락처"
           name="contact"
-          placeholder="바이버 & 연락처"
+          placeholder="연락처"
           required
           error={errors.contact}
         />
-        {/* <TextInputBox
+        <TextInputBox
           type="text"
-          label="기타 문의사항"
-          name="etc"
-          placeholder="문의사항을 입력해주세요."
-        /> */}
+          label="비상연락망"
+          name="contact2"
+          placeholder="(연락처 / 바이브ID / 페이스북 계정명)"
+        />
+        <ConsultCheckbox value={consult} onChange={handleConsultChange} />
         <SelectBox
           label="상담 요청 시간"
           name="time"
@@ -155,7 +183,7 @@ const AppForm = () => {
               key={time}
               className="flex items-center justify-between rounded bg-gray-800 p-2"
             >
-              <span>{time}</span>
+              <span>6월 29일(일) / {time}</span>
               <button
                 type="button"
                 onClick={() => handleDeleteTime(time)}

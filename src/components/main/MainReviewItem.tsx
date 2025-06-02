@@ -15,8 +15,8 @@ const MainReviewItem = ({
 }: MainReviewItemProps) => {
   return (
     <div>
-      <div className="mb-6 aspect-[400/241] bg-slate-500">
-        {image && (
+      {image && (
+        <div className="mb-6 aspect-[1500/844]">
           <Image
             src={image}
             width={1500}
@@ -24,8 +24,8 @@ const MainReviewItem = ({
             alt={reviewer}
             className="h-full w-full object-cover"
           />
-        )}
-      </div>
+        </div>
+      )}
       <p className="mb-3 text-xs md:text-sm">{desc}</p>
       <h5 className="mb-2 text-xs font-bold md:text-sm">{reviewer}</h5>
       <p className="text-xs font-bold md:text-sm">{type}</p>

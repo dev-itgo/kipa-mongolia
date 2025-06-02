@@ -164,19 +164,70 @@ const PaymentPage = () => {
           <h2 className="mb-4 text-xl font-bold">신청 정보</h2>
           <div className="space-y-4">
             <div>
+              <span className="font-bold">상담 요청 시간:</span>{" "}
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.time.map((time, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-gray-700 px-3 py-1 text-sm"
+                  >
+                    {time}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div>
               <span className="font-bold">이름:</span> {formData.name}
             </div>
             <div>
-              <span className="font-bold">나이:</span> {formData.age}
+              <span className="font-bold">생년월일:</span> {formData.birth}
             </div>
             <div>
               <span className="font-bold">연락처:</span> {formData.contact}
             </div>
             <div>
-              <span className="font-bold">상담 요청 시간:</span>{" "}
-              {formData.time.join(", ")}
+              <span className="font-bold">비상연락망:</span> {formData.contact2}
+            </div>
+            <div>
+              <span className="font-bold">상담 요청 분야:</span>{" "}
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.consult.map((area, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-gray-700 px-3 py-1 text-sm"
+                  >
+                    {area === "기타: " && formData.etcText
+                      ? `${area}${formData.etcText}`
+                      : area}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
+        </div>
+        <div className="rounded-lg bg-[#181818] p-6">
+          <h2 className="mb-4 text-xl font-bold">예약금 입금 안내</h2>
+          <ul className="list-disc space-y-2 pl-5">
+            <li className="font-bold">
+              입금자명 기준으로 예약이 확인되며, 입금 순서대로 상담 시간이
+              배정됩니다.
+            </li>
+            <li className="font-bold">
+              예약금은 현장 노쇼 방지를 위한 것으로, 상담회 당일 참석 시 전액
+              환불됩니다.
+            </li>
+            <li className="font-bold">
+              상담회 미참석 시 예약금은 환불되지 않으니 유의해 주세요.
+            </li>
+            <li className="font-bold">
+              예약 확정 안내는 개별 연락을 통해 전달드릴 예정입니다.
+            </li>
+            <li>
+              ✉️ 입금 계좌 정보: Khan Bank 5133150834 (Ж. Цэнгэлмаа) <br />
+              💵 입금 금액 : ₮50,000 MNT{" "}
+              <b>계좌입금 시, 이름/전화번호 로 입금해야합니다.</b>
+            </li>
+          </ul>
         </div>
       </div>
       <div className="px-4">
@@ -237,17 +288,17 @@ const PaymentPage = () => {
         </div>
         <form onSubmit={handleSubmit}>
           <button
+            type="submit"
+            className="mt-6 block w-full cursor-pointer bg-[#00b0fb] p-3 font-bold text-white"
+          >
+            신청하기
+          </button>
+          <button
             type="button"
-            className="mt-6 block w-full cursor-pointer border-1 border-white p-3 text-center font-bold"
+            className="mt-3 block w-full cursor-pointer p-3 text-center font-bold"
             onClick={handleBack}
           >
             다시 작성하기
-          </button>
-          <button
-            type="submit"
-            className="mt-3 block w-full cursor-pointer bg-white p-3 font-bold text-black"
-          >
-            신청하기
           </button>
         </form>
         <PolicyModal

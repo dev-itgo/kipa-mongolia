@@ -51,3 +51,11 @@ body {
 .animate-fade-in-out {
   animation: fadeInOut 3s ease-in-out forwards;
 }
+
+.reviews-swiper .swiper-pagination-bullet {
+  background: #fff;
+}
+.point-swiper .swiper-pagination-bullet-active,
+.reviews-swiper .swiper-pagination-bullet-active {
+  background: #00b0fb;
+}

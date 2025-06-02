@@ -1,6 +1,6 @@
 import { JAPAN_REVIEW_DATA, THAILAND_REVIEW_DATA } from "@/data/review";
-import MainReviewItem from "./MainReviewItem";
 import MainVideo from "./MainVideo";
+import MainReviewsSwiper from "./MainReviewsSwiper";
 
 const MainReviews = () => {
   return (
@@ -28,17 +28,17 @@ const MainReviews = () => {
           </p>
         </div>
       </div>
-      <div className="mt-8 grid grid-cols-2 gap-3">
-        {JAPAN_REVIEW_DATA.map((review) => (
-          <div className="col-span-2 mb-8 md:col-span-1" key={review.id}>
-            <MainReviewItem
-              desc={review.desc}
-              reviewer={review.reviewer}
-              type={review.type}
-              image={review.image}
-            />
-          </div>
-        ))}
+      <div className="my-8">
+        <MainReviewsSwiper data={JAPAN_REVIEW_DATA} />
+        {/* {JAPAN_REVIEW_DATA.map((review) => (
+          <MainReviewItem
+            key={review.id}
+            desc={review.desc}
+            reviewer={review.reviewer}
+            type={review.type}
+            image={review.image}
+          />
+        ))} */}
       </div>
       <hr className="my-10 border-t border-[#3e3e3e]" />
       <div className="grid grid-cols-3 gap-6">
@@ -58,17 +58,17 @@ const MainReviews = () => {
           </p>
         </div>
       </div>
-      <div className="mt-8 grid grid-cols-2 gap-3">
-        {THAILAND_REVIEW_DATA.map((review) => (
-          <div className="col-span-2 mb-8 md:col-span-1" key={review.id}>
-            <MainReviewItem
-              desc={review.desc}
-              reviewer={review.reviewer}
-              type={review.type}
-              image={review.image}
-            />
-          </div>
-        ))}
+      <div className="my-8">
+        <MainReviewsSwiper data={THAILAND_REVIEW_DATA} />
+        {/* {THAILAND_REVIEW_DATA.map((review) => (
+          <MainReviewItem
+            key={review.id}
+            desc={review.desc}
+            reviewer={review.reviewer}
+            type={review.type}
+            image={review.image}
+          />
+        ))} */}
       </div>
     </div>
   );

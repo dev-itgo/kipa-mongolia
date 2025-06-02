@@ -3,7 +3,10 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { MainPointImage } from "@/data/points";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
 
 type MainPointSwiperProps = {
   images: MainPointImage[];
@@ -12,9 +15,13 @@ type MainPointSwiperProps = {
 const MainPointSwiper = ({ images }: MainPointSwiperProps) => {
   return (
     <Swiper
-      modules={[Autoplay]}
+      modules={[Autoplay, Pagination]}
       autoplay={{ delay: 3000, disableOnInteraction: true }}
       speed={1000}
+      pagination={{
+        dynamicBullets: true,
+      }}
+      className="point-swiper"
     >
       {images.map((img) => (
         <SwiperSlide key={img.src}>

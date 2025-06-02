@@ -6,6 +6,7 @@ type SelectBoxProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 };
 
 const timeOptions = [
+  "오전 9시",
   "오전 10시",
   "오전 11시",
   "오전 12시",
@@ -45,7 +46,7 @@ const SelectBox = ({
         <option value="">시간을 선택해주세요. (여러개 가능)</option>
         {timeOptions.map((time) => (
           <option key={time} value={time}>
-            {time}
+            6월 29일(일) / {time}
           </option>
         ))}
       </select>
