@@ -72,15 +72,41 @@ const PaymentCompletePage = () => {
               <span className="font-bold">이름:</span> {formData.name}
             </div>
             <div>
-              <span className="font-bold">나이:</span> {formData.age}
+              <span className="font-bold">생년월일:</span> {formData.birth}
             </div>
             <div>
-              <span className="font-bold">바이버 & 연락처:</span>{" "}
-              {formData.contact}
+              <span className="font-bold">연락처:</span> {formData.contact}
+            </div>
+            <div>
+              <span className="font-bold">비상연락망:</span> {formData.contact2}
+            </div>
+            <div>
+              <span className="font-bold">상담 요청 분야:</span>{" "}
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.consult.map((area, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-gray-700 px-3 py-1 text-sm"
+                  >
+                    {area === "기타: " && formData.etcText
+                      ? `${area}${formData.etcText}`
+                      : area}
+                  </span>
+                ))}
+              </div>
             </div>
             <div>
               <span className="font-bold">상담 요청 시간:</span>{" "}
-              {formData.time.join(", ")}
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.time.map((time, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-gray-700 px-3 py-1 text-sm"
+                  >
+                    {time}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>

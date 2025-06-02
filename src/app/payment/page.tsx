@@ -164,19 +164,6 @@ const PaymentPage = () => {
           <h2 className="mb-4 text-xl font-bold">신청 정보</h2>
           <div className="space-y-4">
             <div>
-              <span className="font-bold">상담 요청 시간:</span>{" "}
-              <div className="mt-2 flex flex-wrap gap-2">
-                {formData.time.map((time, index) => (
-                  <span
-                    key={index}
-                    className="rounded-full bg-gray-700 px-3 py-1 text-sm"
-                  >
-                    {time}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
               <span className="font-bold">이름:</span> {formData.name}
             </div>
             <div>
@@ -199,6 +186,19 @@ const PaymentPage = () => {
                     {area === "기타: " && formData.etcText
                       ? `${area}${formData.etcText}`
                       : area}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <span className="font-bold">상담 요청 시간:</span>{" "}
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.time.map((time, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-gray-700 px-3 py-1 text-sm"
+                  >
+                    {time}
                   </span>
                 ))}
               </div>
