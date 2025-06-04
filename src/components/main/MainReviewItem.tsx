@@ -9,9 +9,9 @@ export type MainReviewItemProps = {
 
 const MainReviewItem = ({
   image,
-  desc,
-  reviewer,
-  type,
+  // desc,
+  // reviewer,
+  // type,
 }: MainReviewItemProps) => {
   return (
     <div>
@@ -21,14 +21,14 @@ const MainReviewItem = ({
             src={image}
             width={1500}
             height={844}
-            alt={reviewer}
+            alt=""
             className="h-full w-full object-cover"
           />
         </div>
       )}
-      <p className="mb-3 text-xs md:text-sm">{desc}</p>
+      {/* <p className="mb-3 text-xs md:text-sm">{desc}</p>
       <h5 className="mb-2 text-xs font-bold md:text-sm">{reviewer}</h5>
-      <p className="text-xs font-bold md:text-sm">{type}</p>
+      <p className="text-xs font-bold md:text-sm">{type}</p> */}
     </div>
   );
 };

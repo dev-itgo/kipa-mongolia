@@ -8,7 +8,7 @@ export default function PaymentLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="pt-14 pb-40 md:pt-[68px] md:pb-24">
+    <div className="pb-40 md:pb-24">
       <Header />
       <main className="min-h-screen">{children}</main>
       <Footer />

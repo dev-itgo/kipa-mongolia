@@ -6,21 +6,15 @@ import Image from "next/image";
 
 type MainVideoProps = {
   title: string;
-  videoUrl: string;
+  videoId?: string;
 };
 
-const MainVideo = ({ title, videoUrl }: MainVideoProps) => {
+const MainVideo = ({ title, videoId }: MainVideoProps) => {
   const [openModal, setOpenModal] = useState(false);
 
-  const getYouTubeId = (url: string) => {
-    const regExp =
-      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? match[2] : null;
-  };
-
-  const videoId = getYouTubeId(videoUrl);
-
+  if (videoId === "" || !videoId) {
+    return null;
+  }
   return (
     <>
       <div
@@ -44,7 +38,7 @@ const MainVideo = ({ title, videoUrl }: MainVideoProps) => {
       </div>
       <VideoModal
         title={title}
-        videoUrl={videoUrl}
+        videoId={videoId}
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
