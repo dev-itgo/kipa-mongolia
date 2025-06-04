@@ -12,7 +12,7 @@ import MainReviews from "@/components/main/MainReviews";
 
 export default function Home() {
   return (
-    <div className="pt-14 pb-40 md:pt-[68px] md:pb-24">
+    <div className="pb-40 md:pb-24">
       <Header />
       <main className="">
         <KeyVisual />
