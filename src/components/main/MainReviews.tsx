@@ -32,7 +32,7 @@ const MainReviews = () => {
       <hr className="my-10 border-t border-[#3e3e3e]" />
       <div className="grid grid-cols-3 gap-6">
         <div className="col-span-3 aspect-[258/160] bg-slate-500 md:col-span-1">
-          {/* <MainVideo title="KIPA 2023 BANGKOK" /> */}
+          <MainVideo title="KIPA 2023 BANGKOK" videoId="JPwVJNJ2Guc" />
         </div>
         <div className="col-span-3 md:col-span-2">
           <h4 className="mb-4 text-sm font-bold md:text-[16px]">

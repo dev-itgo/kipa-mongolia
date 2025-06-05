@@ -1,3 +1,4 @@
+import CONSULT_ITEM from "@/data/consult";
 import { Checkbox, CheckboxProps } from "flowbite-react";
 
 type ConsultCheckboxItemProps = CheckboxProps & {
@@ -10,52 +11,6 @@ type ConsultCheckboxItemProps = CheckboxProps & {
     etcText?: string,
   ) => void;
 };
-
-type CounsultItem = {
-  label: string;
-  id: string;
-  name: string;
-  isEtc?: boolean;
-};
-
-const CONSULT_ITEM: CounsultItem[] = [
-  {
-    label: "눈성형 / 코성형",
-    id: "eye-nose",
-    name: "eyeNose",
-  },
-  {
-    label: "산부인과 (여성성형)",
-    id: "woman",
-    name: "woman",
-  },
-  {
-    label: "비뇨기과 (남성성형)",
-    id: "man",
-    name: "man",
-  },
-  {
-    label: "안면거상",
-    id: "lifting",
-    name: "lifting",
-  },
-  {
-    label: "윤곽수술",
-    id: "faceline",
-    name: "faceline",
-  },
-  {
-    label: "피부과",
-    id: "skin",
-    name: "skin",
-  },
-  {
-    label: "기타: ",
-    id: "etc",
-    name: "etc",
-    isEtc: true,
-  },
-];
 
 const ConsultCheckboxItem = ({
   id,
@@ -83,7 +38,7 @@ const ConsultCheckboxItem = ({
       </label>
       {isEtc && (
         <input
-          name="etcText"
+          name="etcText23"
           className={`ml-2 block h-5 w-full border-b-1 border-neutral-500 text-[16px] focus:ring-blue-500 ${
             error ? "border border-red-500" : ""
           }`}
@@ -104,8 +59,8 @@ const ConsultCheckbox = ({ value, onChange }: ConsultCheckboxProps) => {
     <div className="mb-4 grid grid-cols-2 gap-y-2">
       <div className="col-span-2 mb-2">
         <p className="">
-          <span className="font-bold">상담희망분야</span>{" "}
-          <span className="font-[#f2f2f2] text-[10px]">(필수)</span>
+          <span className="font-bold">상담희망분야 (2,3순위)</span>{" "}
+          <span className="font-[#f2f2f2] text-[10px]">(선택)</span>
         </p>
       </div>
       {CONSULT_ITEM.map((item) => (
@@ -116,7 +71,7 @@ const ConsultCheckbox = ({ value, onChange }: ConsultCheckboxProps) => {
           onChange={(e) => {
             if (item.isEtc) {
               const etcInput = document.querySelector(
-                'input[name="etcText"]',
+                'input[name="etcText23"]',
               ) as HTMLInputElement;
               onChange(item.label, e.target.checked, etcInput?.value);
             } else {

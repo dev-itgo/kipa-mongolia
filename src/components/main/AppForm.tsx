@@ -4,17 +4,19 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import TextInputBox from "@/components/form/TextInputBox";
 import SelectBox from "../form/SelectBox";
-import { IoIosClose } from "react-icons/io";
-import ConsultCheckbox from "../form/CounsultCheckbox";
+import ConsultCheckbox from "../form/ConsultCheckbox";
+import ConsultRadio from "../form/ConsultRadio";
 
 export interface FormData {
-  time: string[];
+  time: string;
   name: string;
   birth: string;
   contact: string;
   contact2?: string;
-  consult: string[];
-  etcText?: string;
+  consult1: string;
+  consult23: string[];
+  etcText1?: string;
+  etcText23?: string;
 }
 
 const AppForm = () => {
@@ -23,30 +25,41 @@ const AppForm = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
     {},
   );
-  const [times, setTimes] = useState<string[]>([]);
-  const [consult, setConsult] = useState<string[]>([]);
-  const [etcText, setEtcText] = useState<string>("");
+  const [time, setTime] = useState<string>("");
+  const [consult1, setConsult1] = useState<string>("");
+  const [consult23, setConsult23] = useState<string[]>([]);
+  const [etcText1, setEtcText1] = useState<string>("");
+  const [etcText23, setEtcText23] = useState<string>("");
 
-  const handleConsultChange = (
+  const handleConsult1Change = (value: string, etcText?: string) => {
+    setConsult1(value);
+    if (value === "기타: " && etcText) {
+      setEtcText1(etcText);
+    } else if (value !== "기타: ") {
+      setEtcText1("");
+    }
+  };
+
+  const handleConsult23Change = (
     value: string,
     checked: boolean,
     etcText?: string,
   ) => {
     if (checked) {
-      // 기타가 이미 있는지 확인
-      const hasEtc = consult.includes("기타: ");
+      // 기타가 이미 있는지 확인 - consult23에서 확인해야 함
+      const hasEtc = consult23.includes("기타: ");
       if (value === "기타: " && !hasEtc) {
-        setConsult([...consult, value]);
+        setConsult23([...consult23, value]);
       } else if (value !== "기타: ") {
-        setConsult([...consult, value]);
+        setConsult23([...consult23, value]);
       }
       if (value === "기타: " && etcText) {
-        setEtcText(etcText);
+        setEtcText23(etcText);
       }
     } else {
-      setConsult(consult.filter((item) => item !== value));
+      setConsult23(consult23.filter((item) => item !== value));
       if (value === "기타: ") {
-        setEtcText("");
+        setEtcText23("");
       }
     }
   };
@@ -64,8 +77,13 @@ const AppForm = () => {
     // Validate age
     if (!data.birth) {
       newErrors.birth = "생년월일을 입력해주세요.";
-    } else if (!/^[0-9]{8}$/.test(data.birth)) {
-      newErrors.birth = "생년월일은 8자리의 숫자만 입력 가능합니다.";
+    } else if (
+      !/^\d{4}\/((0[1-9])|(1[0-2]))\/((0[1-9])|([12][0-9])|(3[01]))$/.test(
+        data.birth,
+      )
+    ) {
+      newErrors.birth =
+        "생년월일은 YYYY/MM/DD 형식으로 입력해주세요. (ex.1989/10/12)";
     }
 
     // Validate contact
@@ -78,8 +96,18 @@ const AppForm = () => {
       newErrors.contact = "올바른 전화번호 형식 또는 LINE ID를 입력해주세요.";
     }
 
-    if (times.length === 0) {
+    if (time === "") {
       newErrors.time = "상담 요청 시간을 선택해주세요.";
+    }
+
+    // Validate consult1 (radio button - required)
+    if (!data.consult1) {
+      newErrors.consult1 = "상담 내용을 선택해주세요.";
+    }
+
+    // Validate consult23 (checkbox - at least one required)
+    if (!data.consult23 || data.consult23.length === 0) {
+      newErrors.consult23 = "상담 내용을 최소 1개 이상 선택해주세요.";
     }
 
     setErrors(newErrors);
@@ -89,12 +117,8 @@ const AppForm = () => {
   const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTime = e.target.value;
     if (selectedTime !== "") {
-      setTimes([...times, selectedTime]);
+      setTime(selectedTime);
     }
-  };
-
-  const handleDeleteTime = (timeToDelete: string) => {
-    setTimes(times.filter((time) => time !== timeToDelete));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -106,9 +130,12 @@ const AppForm = () => {
       name: formData.get("name") as string,
       birth: formData.get("birth") as string,
       contact: formData.get("contact") as string,
-      time: times,
-      consult,
-      etcText,
+      contact2: formData.get("contact2") as string,
+      time,
+      consult1,
+      consult23,
+      etcText1,
+      etcText23,
     };
 
     if (!validateForm(data)) {
@@ -132,18 +159,26 @@ const AppForm = () => {
 
   return (
     <aside
-      className="mb-6 flex-1 [scrollbar-color:theme(colors.neutral.800)_transparent] [scrollbar-width:thin] xl:sticky xl:top-17 xl:h-[calc(100dvh-164px)] xl:max-w-[340px] xl:overflow-auto [&::-webkit-scrollbar]:w-2.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb:hover]:bg-gray-500 [&::-webkit-scrollbar-track]:bg-transparent"
+      className="mb-6 flex-1 [scrollbar-color:theme(colors.neutral.800)_transparent] [scrollbar-width:thin] xl:sticky xl:top-4 xl:h-[calc(100dvh-114px)] xl:max-w-[340px] xl:overflow-auto [&::-webkit-scrollbar]:w-2.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb:hover]:bg-gray-500 [&::-webkit-scrollbar-track]:bg-transparent"
       id="app-form"
     >
       <h3 className="mb-4 text-lg font-bold break-keep">
         지금 신청 하면 사은품 증정 및 참가비 무료
       </h3>
       <form onSubmit={handleSubmit}>
+        <SelectBox
+          label="상담 요청 시간"
+          name="time"
+          defaultValue=""
+          error={errors.time}
+          onChange={handleTimeChange}
+          required
+        />
         <TextInputBox
           type="text"
           label="이름"
           name="name"
-          placeholder="이름을 입력해주세요."
+          placeholder="예약자와 입금자명이 일치해야 합니다"
           required
           error={errors.name}
         />
@@ -151,7 +186,7 @@ const AppForm = () => {
           type="text"
           label="생년월일"
           name="birth"
-          placeholder="나이를 입력해주세요."
+          placeholder="(ex.1989/10/12)"
           required
           error={errors.birth}
         />
@@ -159,41 +194,18 @@ const AppForm = () => {
           type="text"
           label="연락처"
           name="contact"
-          placeholder="연락처"
+          placeholder="(ex.00000000)"
           required
           error={errors.contact}
         />
         <TextInputBox
           type="text"
-          label="비상연락망"
+          label="비상연락망 (ex. Kipa-fair)"
           name="contact2"
-          placeholder="(연락처 / 바이브ID / 페이스북 계정명)"
+          placeholder="(페이스북 계정명/페이스북 링크)"
         />
-        <ConsultCheckbox value={consult} onChange={handleConsultChange} />
-        <SelectBox
-          label="상담 요청 시간"
-          name="time"
-          defaultValue=""
-          error={errors.time}
-          onChange={handleTimeChange}
-        />
-        <div className="mt-2 space-y-2">
-          {times.map((time) => (
-            <div
-              key={time}
-              className="flex items-center justify-between rounded bg-gray-800 p-2"
-            >
-              <span>6월 29일(일) / {time}</span>
-              <button
-                type="button"
-                onClick={() => handleDeleteTime(time)}
-                className="text-red-500 hover:text-red-700"
-              >
-                <IoIosClose size={24} />
-              </button>
-            </div>
-          ))}
-        </div>
+        <ConsultRadio value={consult1} onChange={handleConsult1Change} />
+        <ConsultCheckbox value={consult23} onChange={handleConsult23Change} />
 
         <button
           type="submit"

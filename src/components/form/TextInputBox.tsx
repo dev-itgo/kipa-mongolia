@@ -16,7 +16,9 @@ const TextInputBox = ({
     <div className="mb-4">
       <label htmlFor={name} className="mb-2 block">
         <span className="font-bold">{label}</span>{" "}
-        {required && <span className="font-[#f2f2f2] text-[10px]">(필수)</span>}
+        <span className="font-[#f2f2f2] text-[10px]">
+          {required ? "(필수)" : "(선택)"}
+        </span>
       </label>
       <input
         {...props}

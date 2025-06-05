@@ -9,6 +9,7 @@ import { FormData } from "@/components/main/AppForm";
 import postForm from "@/utils/postForm";
 import Privacy from "@/components/policy/Privacy";
 import Marketing from "@/components/policy/Marketing";
+import ConsultFormData from "@/components/payment/ConsultFormData";
 
 const PaymentPage = () => {
   const router = useRouter();
@@ -160,74 +161,43 @@ const PaymentPage = () => {
     <div className="container mx-auto max-w-md">
       <div className="mb-5 flex flex-col gap-10 p-4">
         <h1 className="text-2xl font-bold">결제 페이지</h1>
-        <div className="rounded-lg bg-[#181818] p-6">
-          <h2 className="mb-4 text-xl font-bold">신청 정보</h2>
-          <div className="space-y-4">
-            <div>
-              <span className="font-bold">이름:</span> {formData.name}
-            </div>
-            <div>
-              <span className="font-bold">생년월일:</span> {formData.birth}
-            </div>
-            <div>
-              <span className="font-bold">연락처:</span> {formData.contact}
-            </div>
-            <div>
-              <span className="font-bold">비상연락망:</span> {formData.contact2}
-            </div>
-            <div>
-              <span className="font-bold">상담 요청 분야:</span>{" "}
-              <div className="mt-2 flex flex-wrap gap-2">
-                {formData.consult.map((area, index) => (
-                  <span
-                    key={index}
-                    className="rounded-full bg-gray-700 px-3 py-1 text-sm"
-                  >
-                    {area === "기타: " && formData.etcText
-                      ? `${area}${formData.etcText}`
-                      : area}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <span className="font-bold">상담 요청 시간:</span>{" "}
-              <div className="mt-2 flex flex-wrap gap-2">
-                {formData.time.map((time, index) => (
-                  <span
-                    key={index}
-                    className="rounded-full bg-gray-700 px-3 py-1 text-sm"
-                  >
-                    {time}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="rounded-lg bg-[#181818] p-6">
-          <h2 className="mb-4 text-xl font-bold">예약금 입금 안내</h2>
+        <ConsultFormData formData={formData} />
+        <div className="rounded-lg bg-[#181818] p-6 font-bold">
+          <h2 className="mb-4 text-xl">예약금 입금 안내</h2>
+          <p className="mb-4">
+            ✉️ 입금 계좌 정보: <br />
+            입금 계좌 정보 : Khan Bank 5133150834 (Ж. Цэнгэлмаа)
+            <br />
+            입금 금액 : ₮50,000 MNT 계좌입금 할 때, 이름/전화번호/예약시간을
+            작성해서 보내주셔야 합니다.
+          </p>
+          <h3>✅ 입금 유의사항</h3>
           <ul className="list-disc space-y-2 pl-5">
-            <li className="font-bold">
-              입금자명 기준으로 예약이 확인되며, 입금 순서대로 상담 시간이
+            <li className="">
+              입금자명 기준으로 예약이 확인되며, 입금 순서에 따라 상담 시간이
               배정됩니다.
             </li>
-            <li className="font-bold">
-              예약금은 현장 노쇼 방지를 위한 것으로, 상담회 당일 참석 시 전액
+            <li className="">
+              예약금은 상담회 당일 노쇼 방지를 위한 용도이며, 참석 시 전액
               환불됩니다.
             </li>
-            <li className="font-bold">
-              상담회 미참석 시 예약금은 환불되지 않으니 유의해 주세요.
-            </li>
-            <li className="font-bold">
-              예약 확정 안내는 개별 연락을 통해 전달드릴 예정입니다.
-            </li>
-            <li>
-              ✉️ 입금 계좌 정보: Khan Bank 5133150834 (Ж. Цэнгэлмаа) <br />
-              💵 입금 금액 : ₮50,000 MNT{" "}
-              <b>계좌입금 시, 이름/전화번호 로 입금해야합니다.</b>
+            <li className="">
+              상담회 미참석 시 예약금은 환불되지 않으니 이 점 꼭 유의해 주세요.
             </li>
           </ul>
+          <p className="mt-4">
+            입금 후, 반드시 페이스북 메시지로 입금 안내 메시지를 보내주세요.
+            <br />
+            👉{" "}
+            <a
+              href="https://www.facebook.com/profile.php?id=61574271616315&locale=ko_KR"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#00b0fb] underline"
+            >
+              KIPA 몽골 페이스북 링크
+            </a>
+          </p>
         </div>
       </div>
       <div className="px-4">
