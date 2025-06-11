@@ -7,6 +7,8 @@ import { Checkbox, Label } from "flowbite-react";
 import { FormData } from "@/components/main/AppForm";
 import postForm from "@/utils/postForm";
 import ConsultFormData from "@/components/payment/ConsultFormData";
+import ConsultRadio from "@/components/form/ConsultRadio";
+import ConsultCheckbox from "@/components/form/ConsultCheckbox";
 
 const PaymentPage = () => {
   const router = useRouter();
@@ -14,6 +16,12 @@ const PaymentPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAgree, setIsAgree] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [consult1, setConsult1] = useState<string>("");
+  const [consult23, setConsult23] = useState<string[]>([]);
+  const [etcText1, setEtcText1] = useState<string>("");
+  const [etcText23, setEtcText23] = useState<string>("");
+  const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     // Get form data from sessionStorage
@@ -48,9 +56,83 @@ const PaymentPage = () => {
     }
   }, [isProcessing]);
 
+  // Check form validity whenever consult fields change
+  useEffect(() => {
+    const isValid = Boolean(consult1 && consult23.length > 0);
+    setIsFormValid(isValid);
+  }, [consult1, consult23]);
+
   const handleBack = () => {
     router.back();
     sessionStorage.removeItem("formData");
+  };
+
+  const handleConsult1Change = (value: string, etcText?: string) => {
+    if (value === "기타: ") {
+      if (etcText) {
+        setEtcText1(etcText);
+        setConsult1(value + etcText);
+      } else {
+        setEtcText1("");
+        setConsult1(value);
+      }
+    } else {
+      setEtcText1("");
+      setConsult1(value);
+    }
+  };
+
+  const handleConsult23Change = (
+    value: string,
+    checked: boolean,
+    etcText?: string,
+  ) => {
+    if (checked) {
+      // 기타가 이미 있는지 확인 - consult23에서 확인해야 함
+      const hasEtc = consult23.some((item) => item.startsWith("기타: "));
+
+      if (value === "기타: " && !hasEtc) {
+        if (etcText) {
+          setEtcText23(etcText);
+          setConsult23([...consult23, value + etcText]);
+        } else {
+          setConsult23([...consult23, value]);
+        }
+      } else if (value === "기타: " && hasEtc && etcText) {
+        // 기존 기타 항목을 업데이트
+        const updatedConsult23 = consult23.map((item) =>
+          item.startsWith("기타: ") ? value + etcText : item,
+        );
+        setEtcText23(etcText);
+        setConsult23(updatedConsult23);
+      } else if (value !== "기타: ") {
+        setConsult23([...consult23, value]);
+      }
+    } else {
+      if (value === "기타: ") {
+        setConsult23(consult23.filter((item) => !item.startsWith("기타: ")));
+        setEtcText23("");
+      } else {
+        setConsult23(consult23.filter((item) => item !== value));
+      }
+    }
+  };
+
+  const validateConsultFields = (): boolean => {
+    const newErrors: Partial<Record<string, string>> = {};
+
+    // Validate consult1 (radio button - required)
+    if (!consult1) {
+      newErrors.consult1 = "상담 내용을 선택해주세요.";
+    }
+
+    // Validate consult23 (checkbox - at least one required)
+    if (!consult23 || consult23.length === 0) {
+      newErrors.consult23 = "상담 내용을 최소 1개 이상 선택해주세요.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -64,12 +146,26 @@ const PaymentPage = () => {
       return;
     }
 
+    // Validate consult fields
+    if (!validateConsultFields()) {
+      return;
+    }
+
     setIsProcessing(true);
     // Generate a unique ID for this submission
     const submissionUid = crypto.randomUUID();
     sessionStorage.setItem("submissionUid", submissionUid);
 
-    await postForm(formData);
+    // Update formData with consult fields
+    const completeFormData = {
+      ...formData,
+      consult1,
+      consult23,
+      etcText1,
+      etcText23,
+    };
+
+    await postForm(completeFormData);
     toast.success("신청이 완료되었습니다.", {
       duration: 5000,
     });
@@ -129,7 +225,30 @@ const PaymentPage = () => {
     <div className="container mx-auto max-w-md">
       <div className="mb-5 flex flex-col gap-10 p-4">
         <h1 className="text-2xl font-bold">결제 페이지</h1>
-        <ConsultFormData formData={formData} />
+        <ConsultFormData formData={{ ...formData!, consult1, consult23 }} />
+
+        {/* 상담 분야 선택 섹션 */}
+        <div className="rounded-lg bg-[#181818] p-6">
+          <h2 className="mb-4 text-xl font-bold">상담 분야 선택</h2>
+          <div className="space-y-4">
+            <div>
+              <ConsultRadio value={consult1} onChange={handleConsult1Change} />
+              {errors.consult1 && (
+                <p className="mt-1 text-sm text-red-500">{errors.consult1}</p>
+              )}
+            </div>
+            <div>
+              <ConsultCheckbox
+                value={consult23}
+                onChange={handleConsult23Change}
+              />
+              {errors.consult23 && (
+                <p className="mt-1 text-sm text-red-500">{errors.consult23}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
         <div className="rounded-lg bg-[#181818] p-6 font-bold">
           <h2 className="mb-4 text-xl">예약금 입금 안내</h2>
           <p className="mb-4">
@@ -189,9 +308,9 @@ const PaymentPage = () => {
         <form onSubmit={handleSubmit}>
           <button
             type="submit"
-            disabled={!isAgree}
+            disabled={!isAgree || !isFormValid}
             className={`mt-6 block w-full p-3 font-bold text-white ${
-              isAgree
+              isAgree && isFormValid
                 ? "cursor-pointer bg-[#00b0fb]"
                 : "cursor-not-allowed bg-gray-500"
             }`}

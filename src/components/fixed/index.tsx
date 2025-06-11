@@ -1,16 +1,21 @@
 "use client";
 import { useEffect } from "react";
 import { scrollToAppForm } from "@/utils/scroll";
-import { generateRandomToastMessage } from "@/utils/toast";
 import toast from "react-hot-toast";
 
 const FixedBanner = () => {
   useEffect(() => {
     let timeOut: NodeJS.Timeout | null = null;
 
+    // 현재 보고 있는 사람 수를 랜덤하게 생성하는 함수
+    const generateViewersMessage = () => {
+      const viewersCount = Math.floor(Math.random() * 41) + 10; // 10~50명 사이
+      return `현재 ${viewersCount}명이 신청중입니다.`;
+    };
+
     // 토스트 메시지 표시 함수
     const showToast = () => {
-      toast.success(generateRandomToastMessage(), {
+      toast.success(generateViewersMessage(), {
         duration: 10000,
         position: "bottom-center",
         // style: {
@@ -21,12 +26,12 @@ const FixedBanner = () => {
       });
 
       // 다음 토스트 메시지를 위한 타이머 설정
-      const nextTimeout = Math.random() * 30000 + 10000; // 10초 ~ 30초
+      const nextTimeout = Math.random() * 20000 + 10000; // 10초 ~ 30초
       timeOut = setTimeout(showToast, nextTimeout);
     };
 
-    // 초기 토스트 메시지 표시
-    showToast();
+    // 5초 후에 첫 번째 토스트 메시지 표시
+    timeOut = setTimeout(showToast, 2000);
 
     return () => {
       if (timeOut) {

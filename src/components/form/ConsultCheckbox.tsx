@@ -1,7 +1,8 @@
+import React from "react";
 import CONSULT_ITEM from "@/data/consult";
 import { Checkbox, CheckboxProps } from "flowbite-react";
 
-type ConsultCheckboxItemProps = CheckboxProps & {
+type ConsultCheckboxItemProps = Omit<CheckboxProps, "onChange"> & {
   label: string;
   error?: string;
   isEtc?: boolean;
@@ -19,14 +20,51 @@ const ConsultCheckboxItem = ({
   error,
   isEtc,
   etcValue,
-  ...props
+  onChange,
+  ...checkboxProps
 }: ConsultCheckboxItemProps) => {
+  const [isComposing, setIsComposing] = React.useState(false);
+  const [localValue, setLocalValue] = React.useState(etcValue || "");
+
+  // etcValue가 변경되면 localValue도 업데이트
+  React.useEffect(() => {
+    setLocalValue(etcValue || "");
+  }, [etcValue]);
+
   const handleEtcTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (props.onChange) {
+    const newValue = e.target.value;
+    setLocalValue(newValue);
+
+    if (!isComposing && onChange) {
       const syntheticEvent = {
         target: { checked: true },
       } as React.ChangeEvent<HTMLInputElement>;
-      props.onChange(syntheticEvent, true, e.target.value);
+      onChange(syntheticEvent, true, newValue);
+    }
+  };
+
+  const handleCompositionStart = () => {
+    setIsComposing(true);
+  };
+
+  const handleCompositionEnd = (
+    e: React.CompositionEvent<HTMLInputElement>,
+  ) => {
+    setIsComposing(false);
+    const newValue = e.currentTarget.value;
+    setLocalValue(newValue);
+
+    if (onChange) {
+      const syntheticEvent = {
+        target: { checked: true },
+      } as React.ChangeEvent<HTMLInputElement>;
+      onChange(syntheticEvent, true, newValue);
+    }
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(e, e.target.checked, localValue);
     }
   };
 
@@ -34,18 +72,25 @@ const ConsultCheckboxItem = ({
     <div
       className={`flex items-center gap-1.5 ${isEtc ? "col-span-2" : "col-span-1"}`}
     >
-      <Checkbox id={id} {...props} className="shrink-0" />
+      <Checkbox
+        id={id}
+        {...checkboxProps}
+        className="shrink-0"
+        onChange={handleCheckboxChange}
+      />
       <label htmlFor={id} className="shrink-0 text-sm">
         {label}
       </label>
       {isEtc && (
         <input
           name="etcText23"
-          value={etcValue || ""}
+          value={localValue}
           className={`ml-2 block h-5 w-full border-b-1 border-neutral-500 text-[16px] focus:ring-blue-500 ${
             error ? "border border-red-500" : ""
           }`}
           onChange={handleEtcTextChange}
+          onCompositionStart={handleCompositionStart}
+          onCompositionEnd={handleCompositionEnd}
         />
       )}
     </div>
@@ -61,12 +106,21 @@ const ConsultCheckbox = ({ value, onChange }: ConsultCheckboxProps) => {
   // 기타 항목의 현재 텍스트 추출
   const etcValue = value.find((val) => val.startsWith("기타: "));
   const currentEtcText = etcValue ? etcValue.replace("기타: ", "") : "";
+
+  const handleCheckboxChange = (
+    item: (typeof CONSULT_ITEM)[0],
+    checked: boolean,
+    etcText?: string,
+  ) => {
+    onChange(item.label, checked, etcText);
+  };
+
   return (
     <div className="mb-4 grid grid-cols-2 gap-y-2">
       <div className="col-span-2 mb-2">
         <p className="">
           <span className="font-bold">상담희망분야 (2,3순위)</span>{" "}
-          <span className="font-[#f2f2f2] text-[10px]">(선택)</span>
+          <span className="font-[#f2f2f2] text-[10px]">(필수)</span>
         </p>
       </div>
       {CONSULT_ITEM.map((item) => (
@@ -79,15 +133,8 @@ const ConsultCheckbox = ({ value, onChange }: ConsultCheckboxProps) => {
               ? value.some((val) => val.startsWith(item.label))
               : value.includes(item.label)
           }
-          onChange={(e) => {
-            if (item.isEtc) {
-              const etcInput = document.querySelector(
-                'input[name="etcText23"]',
-              ) as HTMLInputElement;
-              onChange(item.label, e.target.checked, etcInput?.value);
-            } else {
-              onChange(item.label, e.target.checked);
-            }
+          onChange={(e, checked, etcText) => {
+            handleCheckboxChange(item, checked, etcText);
           }}
         />
       ))}

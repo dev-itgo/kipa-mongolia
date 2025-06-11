@@ -28,27 +28,31 @@ const ConsultFormData = ({ formData }: ConsultFormDataProps) => {
         <div>
           <span className="font-bold">비상연락망:</span> {formData.contact2}
         </div>
-        <div>
-          <span className="font-bold">상담 요청 분야 (1순위):</span>{" "}
-          <span className="rounded-full bg-gray-700 px-3 py-1 text-sm">
-            {formData.consult1 === "기타: " && formData.etcText1
-              ? `${formData.consult1}${formData.etcText1}`
-              : formData.consult1}
-          </span>
-        </div>
-        <div>
-          <span className="font-bold">상담 요청 분야 (2,3순위):</span>{" "}
-          <div className="mt-2 flex flex-wrap gap-2">
-            {formData.consult23.map((area, index) => (
-              <span
-                key={index}
-                className="rounded-full bg-gray-700 px-3 py-1 text-sm"
-              >
-                {area}
-              </span>
-            ))}
+        {formData.consult1 && (
+          <div>
+            <span className="font-bold">상담 요청 분야 (1순위):</span>{" "}
+            <span className="rounded-full bg-gray-700 px-3 py-1 text-sm">
+              {formData.consult1 === "기타: " && formData.etcText1
+                ? `${formData.consult1}${formData.etcText1}`
+                : formData.consult1}
+            </span>
           </div>
-        </div>
+        )}
+        {formData.consult23 && formData.consult23.length > 0 && (
+          <div>
+            <span className="font-bold">상담 요청 분야 (2,3순위):</span>{" "}
+            <div className="mt-2 flex flex-wrap gap-2">
+              {formData.consult23.map((area, index) => (
+                <span
+                  key={index}
+                  className="rounded-full bg-gray-700 px-3 py-1 text-sm"
+                >
+                  {area}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
