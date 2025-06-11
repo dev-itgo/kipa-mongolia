@@ -32,11 +32,17 @@ const AppForm = () => {
   const [etcText23, setEtcText23] = useState<string>("");
 
   const handleConsult1Change = (value: string, etcText?: string) => {
-    setConsult1(value);
-    if (value === "기타: " && etcText) {
-      setEtcText1(etcText);
-    } else if (value !== "기타: ") {
+    if (value === "기타: ") {
+      if (etcText) {
+        setEtcText1(etcText);
+        setConsult1(value + etcText);
+      } else {
+        setEtcText1("");
+        setConsult1(value);
+      }
+    } else {
       setEtcText1("");
+      setConsult1(value);
     }
   };
 
@@ -47,19 +53,31 @@ const AppForm = () => {
   ) => {
     if (checked) {
       // 기타가 이미 있는지 확인 - consult23에서 확인해야 함
-      const hasEtc = consult23.includes("기타: ");
+      const hasEtc = consult23.some((item) => item.startsWith("기타: "));
+
       if (value === "기타: " && !hasEtc) {
-        setConsult23([...consult23, value]);
+        if (etcText) {
+          setEtcText23(etcText);
+          setConsult23([...consult23, value + etcText]);
+        } else {
+          setConsult23([...consult23, value]);
+        }
+      } else if (value === "기타: " && hasEtc && etcText) {
+        // 기존 기타 항목을 업데이트
+        const updatedConsult23 = consult23.map((item) =>
+          item.startsWith("기타: ") ? value + etcText : item,
+        );
+        setEtcText23(etcText);
+        setConsult23(updatedConsult23);
       } else if (value !== "기타: ") {
         setConsult23([...consult23, value]);
       }
-      if (value === "기타: " && etcText) {
-        setEtcText23(etcText);
-      }
     } else {
-      setConsult23(consult23.filter((item) => item !== value));
       if (value === "기타: ") {
+        setConsult23(consult23.filter((item) => !item.startsWith("기타: ")));
         setEtcText23("");
+      } else {
+        setConsult23(consult23.filter((item) => item !== value));
       }
     }
   };
@@ -93,7 +111,7 @@ const AppForm = () => {
       !/^\+?[0-9-]{4,20}$/.test(data.contact) &&
       !/^[a-zA-Z0-9._-]{4,20}$/.test(data.contact)
     ) {
-      newErrors.contact = "올바른 전화번호 형식 또는 LINE ID를 입력해주세요.";
+      newErrors.contact = "올바른 전화번호 형식을 입력해주세요.";
     }
 
     if (time === "") {

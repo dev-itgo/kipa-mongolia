@@ -6,6 +6,7 @@ type ConsultRadioItemProps = RadioProps & {
   label: string;
   error?: string;
   isEtc?: boolean;
+  etcValue?: string;
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement>,
     selected: boolean,
@@ -18,6 +19,7 @@ const ConsultRadioItem = ({
   label,
   error,
   isEtc,
+  etcValue,
   ...props
 }: ConsultRadioItemProps) => {
   const handleEtcTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +42,7 @@ const ConsultRadioItem = ({
       {isEtc && (
         <input
           name="etcText1"
+          value={etcValue || ""}
           className={`ml-2 block h-5 w-full border-b-1 border-neutral-500 text-[16px] focus:ring-blue-500 ${
             error ? "border border-red-500" : ""
           }`}
@@ -56,6 +59,11 @@ type ConsultRadioProps = {
 };
 
 const ConsultRadio = ({ value, onChange }: ConsultRadioProps) => {
+  // 기타 항목의 현재 텍스트 추출
+  const etcValue = value.startsWith("기타: ")
+    ? value.replace("기타: ", "")
+    : "";
+
   return (
     <div className="mb-4 grid grid-cols-2 gap-y-2">
       <div className="col-span-2 mb-2">
@@ -69,7 +77,10 @@ const ConsultRadio = ({ value, onChange }: ConsultRadioProps) => {
           key={item.id}
           {...item}
           name="consultPriority"
-          checked={value === item.label}
+          etcValue={item.isEtc ? etcValue : undefined}
+          checked={
+            item.isEtc ? value.startsWith(item.label) : value === item.label
+          }
           onChange={() => {
             if (item.isEtc) {
               const etcInput = document.querySelector(

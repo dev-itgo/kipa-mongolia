@@ -5,6 +5,7 @@ type ConsultCheckboxItemProps = CheckboxProps & {
   label: string;
   error?: string;
   isEtc?: boolean;
+  etcValue?: string;
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement>,
     checked: boolean,
@@ -17,6 +18,7 @@ const ConsultCheckboxItem = ({
   label,
   error,
   isEtc,
+  etcValue,
   ...props
 }: ConsultCheckboxItemProps) => {
   const handleEtcTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +41,7 @@ const ConsultCheckboxItem = ({
       {isEtc && (
         <input
           name="etcText23"
+          value={etcValue || ""}
           className={`ml-2 block h-5 w-full border-b-1 border-neutral-500 text-[16px] focus:ring-blue-500 ${
             error ? "border border-red-500" : ""
           }`}
@@ -55,6 +58,9 @@ type ConsultCheckboxProps = {
 };
 
 const ConsultCheckbox = ({ value, onChange }: ConsultCheckboxProps) => {
+  // 기타 항목의 현재 텍스트 추출
+  const etcValue = value.find((val) => val.startsWith("기타: "));
+  const currentEtcText = etcValue ? etcValue.replace("기타: ", "") : "";
   return (
     <div className="mb-4 grid grid-cols-2 gap-y-2">
       <div className="col-span-2 mb-2">
@@ -67,7 +73,12 @@ const ConsultCheckbox = ({ value, onChange }: ConsultCheckboxProps) => {
         <ConsultCheckboxItem
           key={item.id}
           {...item}
-          checked={value.includes(item.label)}
+          etcValue={item.isEtc ? currentEtcText : undefined}
+          checked={
+            item.isEtc
+              ? value.some((val) => val.startsWith(item.label))
+              : value.includes(item.label)
+          }
           onChange={(e) => {
             if (item.isEtc) {
               const etcInput = document.querySelector(

@@ -44,9 +44,7 @@ const ConsultFormData = ({ formData }: ConsultFormDataProps) => {
                 key={index}
                 className="rounded-full bg-gray-700 px-3 py-1 text-sm"
               >
-                {area === "기타: " && formData.etcText23
-                  ? `${area}${formData.etcText23}`
-                  : area}
+                {area}
               </span>
             ))}
           </div>
