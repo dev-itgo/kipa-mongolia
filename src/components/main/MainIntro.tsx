@@ -3,7 +3,7 @@ import React from "react";
 
 const MainIntro = () => {
   return (
-    <div className="my-20">
+    <div className="mb-20">
       <Image
         src="/kipa-intro.jpg"
         width={820}

@@ -3,7 +3,7 @@ import FixedBanner from "@/components/fixed";
 import Footer from "@/components/footer";
 import KeyVisual from "@/components/main/KeyVisual";
 import AppForm from "@/components/main/AppForm";
-import MainTimer from "@/components/main/MainTimer";
+// import MainTimer from "@/components/main/MainTimer";
 import MainIntro from "@/components/main/MainIntro";
 import MainPoints from "@/components/main/MainPoints";
 import MainDoctors from "@/components/main/MainDoctors";
@@ -18,7 +18,7 @@ export default function Home() {
         <KeyVisual />
         <div className="container-2xl mt-20 flex h-auto flex-col gap-10 xl:flex-row">
           <div className="flex-1 xl:max-w-[820px]">
-            <MainTimer />
+            {/* <MainTimer /> */}
             <MainIntro />
             <MainPoints />
             <MainDoctors />

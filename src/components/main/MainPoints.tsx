@@ -3,6 +3,7 @@ import MainCoupon from "./MainCoupon";
 import MainPoint from "./MainPoint";
 import MainRecommend from "./MainRecommend";
 import POINTS_DATA from "@/data/points";
+import MainLocation from "./MainLocation";
 
 const formatText = (text: string) => {
   return text.split("\n").map((line, index) => (
@@ -23,6 +24,7 @@ const MainPoints = () => {
         </MainPoint>
       ))}
       <MainRecommend />
+      <MainLocation />
       <MainCoupon count={4} />
     </>
   );

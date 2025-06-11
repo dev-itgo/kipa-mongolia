@@ -117,4 +117,19 @@ const POINTS_DATA: PointData[] = [
   },
 ];
 
+export const LOCATIONS_IMAGES_DATA = [
+  {
+    src: "/location/blue-sky-hotel.jpg",
+    alt: "블루스카이 호텔",
+    width: 1024,
+    height: 634,
+  },
+  {
+    src: "/location/blue-sky-jadehall.jpg",
+    alt: "블루스카이 호텔 제이드홀",
+    width: 2000,
+    height: 1333,
+  },
+];
+
 export default POINTS_DATA;

@@ -22,7 +22,7 @@ const KeyVisualSwiper = () => {
     >
       {images.map((image, index) => (
         <SwiperSlide key={index} data-swiper-parallax-x="-23%">
-          <div className="aspect-[4/3] overflow-hidden md:aspect-auto md:h-[480px]">
+          <div className="aspect-[4/3] overflow-hidden md:aspect-[8/3]">
             <Image
               src={image}
               alt="Key Visual"
