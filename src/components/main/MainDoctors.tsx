@@ -44,9 +44,12 @@ const MainDoctors = () => {
   return (
     <div className="mb-24">
       <div className="mb-6 text-center">
-        <h3 className="mb-3 text-xl font-bold md:text-2xl">의료진 소개</h3>
+        <h3 className="mb-3 text-xl font-bold md:text-2xl">
+          Эмч нарын танилцуулга
+        </h3>
         <p className="text-[#f2f2f2] md:text-[16px]">
-          이 상담회를 특별하게 만드는 한국 상위 1% 의료진
+          Энэ зөвлөгөөний онцлог нь: БНСУ-ын дээд түвшний 1%-д багтдаг мэргэшсэн
+          эмч нар оролцоно
         </p>
       </div>
       <ul className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-3">

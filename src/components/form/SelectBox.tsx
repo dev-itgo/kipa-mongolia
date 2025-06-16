@@ -72,7 +72,9 @@ const SelectBox = ({
     <div className="mb-4">
       <label htmlFor={name} className="mb-2 block">
         <span className="font-bold">{label}</span>{" "}
-        {required && <span className="font-[#f2f2f2] text-[10px]">(필수)</span>}
+        {required && (
+          <span className="font-[#f2f2f2] text-[10px]">(Заавал)</span>
+        )}
       </label>
       <select
         {...props}
@@ -83,10 +85,10 @@ const SelectBox = ({
         required={required}
         defaultValue={defaultValue}
       >
-        <option value="">시간을 선택해주세요.</option>
+        <option value="">Цаг сонгох</option>
         {timeOptions.map((time) => (
           <option key={time} value={time}>
-            6월 29일(일) / {time}
+            2025 он 6 сар 29 өдөр (Ням) / {time}
           </option>
         ))}
       </select>

@@ -7,42 +7,42 @@ type ConsultItem = {
 
 const CONSULT_ITEM: ConsultItem[] = [
   {
-    label: "눈성형",
+    label: "Зовхи гоо сайхны мэс засал",
     id: "eye",
     name: "eye",
   },
   {
-    label: "코성형",
+    label: "Хамар гоо сайхны мэс засал",
     id: "nose",
     name: "nose",
   },
   {
-    label: "산부인과 (여성성형)",
+    label: "Эмэгтэйчүүд (эмэгтэйчүүдийн пластик мэс засал)",
     id: "woman",
     name: "woman",
   },
   {
-    label: "비뇨기과 (남성성형)",
+    label: "Эрэгтэйчүүд (Эрэгтэйчүүдийн пластик мэс засал)",
     id: "man",
     name: "man",
   },
   {
-    label: "안면거상",
+    label: "Арьс өргөх мэс засал",
     id: "lifting",
     name: "lifting",
   },
   {
-    label: "윤곽수술",
+    label: "Нүүрний хэлбэр засах ясны мэс засал",
     id: "faceline",
     name: "faceline",
   },
   {
-    label: "피부과 (비절개 리프팅)",
+    label: "Арьсны тасаг ( мэсийн бус аргаар арьс өргөх )",
     id: "skin",
     name: "skin",
   },
   {
-    label: "기타: ",
+    label: "Бусад: ",
     id: "etc",
     name: "etc",
     isEtc: true,

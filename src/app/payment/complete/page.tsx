@@ -44,7 +44,7 @@ const PaymentCompletePage = () => {
     return (
       <div className="container mx-auto max-w-md">
         <div className="flex flex-col gap-10 p-4">
-          <h1 className="text-2xl font-bold">신청 완료 페이지</h1>
+          {/* <h1 className="text-2xl font-bold">신청 완료 페이지</h1> */}
           <div className="rounded-lg bg-[#181818] p-6">
             <div className="animate-pulse space-y-4">
               <div className="h-4 w-3/4 rounded bg-gray-700"></div>
@@ -64,14 +64,28 @@ const PaymentCompletePage = () => {
   return (
     <div className="container mx-auto max-w-md">
       <div className="mb-5 flex flex-col gap-10 p-4">
-        <h1 className="text-2xl font-bold">신청 완료 페이지</h1>
+        {/* <h1 className="text-2xl font-bold">Өргөдөл амжилттай бүртгэгдлээ.</h1> */}
         <ConsultFormData formData={formData} />
+        <div className="rounded-lg bg-[#181818] p-6">
+          <p className="mb-4">Зөвлөгөө авах хүсэлт амжилттай илгээгдлээ.</p>
+          <p className="mb-4">
+            Зөвлөгөөний урьдчилгаа төлбөр баталгаажсаны дараа Захиалга
+            баталгаажсан тухай мессеж авснаар эцэслэн баталгаажна. <br />
+            Хэрэв төлбөр орж баталгаажаагүй бол зөвлөгөө автоматаар цуцлагдана.
+          </p>
+          <p className="mb-4">
+            Бүх орлого бүрэн хянагдаж, Дарааллаар мэдээлэл хүргэгдэж байна.{" "}
+            <br />
+            Баталгаажуулахад тодорхой хугацаа шаардагдаж болзошгүй ч Та тайван
+            хүлээнэ үү, баярлалаа.
+          </p>
+        </div>
         <div className="">
           <Link
             href="/"
             className="mt-3 block w-full cursor-pointer bg-white p-3 text-center font-bold text-black"
           >
-            홈으로 이동
+            Нүүр хуудас руу буцах
           </Link>
         </div>
       </div>

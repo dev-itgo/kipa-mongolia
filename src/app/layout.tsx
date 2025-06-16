@@ -16,9 +16,9 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "KIPA 울란바토르",
+  title: "KIPA Ulaanbaatar",
   description:
-    "한국 아이돌이 찾는 실력있는 한국 의료진들이 울란바토르에 옵니다!",
+    "Солонгосын алдартнуудын сонгодог шилдэг эмч нар Улаанбаатарт ирнэ!",
   icons: {
     icon: "https://cdn.prod.website-files.com/67c9a4b839914d3ef7a9001d/67d280d493833e9ed3b0eb64_favicon-32x32.png",
     apple:
@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="mn">
       <body
         className={`${notoSansKR.variable} ${montserrat.variable} antialiased`}
       >

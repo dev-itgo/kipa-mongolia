@@ -15,7 +15,7 @@ const MainFaqAccordion = ({ title, desc }: MainFaqAccordionProps) => {
     <div className="rounded-xl border-1 border-[#333] p-2">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-12 w-full cursor-pointer items-center gap-4 px-2"
+        className="flex min-h-12 w-full cursor-pointer items-center gap-4 px-2"
       >
         <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#666]">
           <motion.div

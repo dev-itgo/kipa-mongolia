@@ -10,7 +10,7 @@ const FixedBanner = () => {
     // 현재 보고 있는 사람 수를 랜덤하게 생성하는 함수
     const generateViewersMessage = () => {
       const viewersCount = Math.floor(Math.random() * 41) + 10; // 10~50명 사이
-      return `현재 ${viewersCount}명이 신청중입니다.`;
+      return `Одоогоор ${viewersCount} хүн бүртгүүлж байна.`;
     };
 
     // 토스트 메시지 표시 함수
@@ -52,15 +52,15 @@ const FixedBanner = () => {
         <div className="rounded-md bg-neutral-800 p-2.5 pl-3.5 md:p-3">
           <div className="flex w-full items-center justify-between gap-8 md:w-auto">
             <div className="py-1 md:pl-2">
-              <h4 className="mb-1 text-sm font-bold">
-                📦 선착순 100명 상담비 무료 + 사은품 지급 🎁
+              <h4 className="mb-1 text-xs font-bold md:text-sm">
+                📦 Эхний 100 хүн зөвлөгөөн үнэ төлбөргүй + гарын бэлэгтэй ! 🎁
               </h4>
             </div>
             <button
               className="shrink-0 cursor-pointer rounded-md bg-white px-5 py-3 text-sm font-bold text-black md:p-3.5"
               onClick={handleApplyClick}
             >
-              지금 신청하기
+              Одоо бүртгүүлэх
             </button>
           </div>
         </div>

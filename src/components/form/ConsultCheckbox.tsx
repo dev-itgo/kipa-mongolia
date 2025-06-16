@@ -69,16 +69,14 @@ const ConsultCheckboxItem = ({
   };
 
   return (
-    <div
-      className={`flex items-center gap-1.5 ${isEtc ? "col-span-2" : "col-span-1"}`}
-    >
+    <div>
       <Checkbox
         id={id}
         {...checkboxProps}
-        className="shrink-0"
+        className="mr-1.5 inline-block align-text-bottom"
         onChange={handleCheckboxChange}
       />
-      <label htmlFor={id} className="shrink-0 text-sm">
+      <label htmlFor={id} className="text-sm">
         {label}
       </label>
       {isEtc && (
@@ -104,8 +102,8 @@ type ConsultCheckboxProps = {
 
 const ConsultCheckbox = ({ value, onChange }: ConsultCheckboxProps) => {
   // 기타 항목의 현재 텍스트 추출
-  const etcValue = value.find((val) => val.startsWith("기타: "));
-  const currentEtcText = etcValue ? etcValue.replace("기타: ", "") : "";
+  const etcValue = value.find((val) => val.startsWith("Бусад: "));
+  const currentEtcText = etcValue ? etcValue.replace("Бусад: ", "") : "";
 
   const handleCheckboxChange = (
     item: (typeof CONSULT_ITEM)[0],
@@ -116,11 +114,11 @@ const ConsultCheckbox = ({ value, onChange }: ConsultCheckboxProps) => {
   };
 
   return (
-    <div className="mb-4 grid grid-cols-2 gap-y-2">
+    <div className="mb-4 flex flex-col gap-y-2">
       <div className="col-span-2 mb-2">
         <p className="">
-          <span className="font-bold">상담희망분야 (2,3순위)</span>{" "}
-          <span className="font-[#f2f2f2] text-[10px]">(필수)</span>
+          <span className="font-bold">Зөвлөгөө авах чиглэл(2,3 дугаарт)</span>{" "}
+          <span className="font-[#f2f2f2] text-[10px]">(Заавал)</span>
         </p>
       </div>
       {CONSULT_ITEM.map((item) => (

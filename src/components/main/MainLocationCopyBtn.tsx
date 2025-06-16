@@ -8,16 +8,16 @@ const COPY_ADDRESS =
 const MainLocationCopyBtn = () => {
   const handleCopy = () => {
     navigator.clipboard.writeText(COPY_ADDRESS);
-    toast.success("주소가 복사되었습니다.");
+    toast.success("Copy success!");
   };
 
   return (
     <button
-      className="flex cursor-pointer items-center gap-2 rounded-md border-1 border-white px-5 py-3 text-sm font-bold hover:bg-neutral-800 md:p-3.5"
+      className="flex cursor-pointer items-center gap-2 rounded-md border-1 border-white px-5 py-3 text-left text-sm font-bold hover:bg-neutral-800 md:p-3.5"
       onClick={handleCopy}
     >
       <MdOutlineContentCopy />
-      주소 복사
+      Хаяг хуулж авах
     </button>
   );
 };

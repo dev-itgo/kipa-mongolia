@@ -69,16 +69,14 @@ const ConsultRadioItem = ({
   };
 
   return (
-    <div
-      className={`flex items-center gap-1.5 ${isEtc ? "col-span-2" : "col-span-1"}`}
-    >
+    <div>
       <Radio
         id={`${id}-radio`}
         {...radioProps}
-        className="shrink-0"
+        className="mr-1.5 inline-block align-text-bottom"
         onChange={handleRadioChange}
       />
-      <label htmlFor={`${id}-radio`} className="shrink-0 text-sm">
+      <label htmlFor={`${id}-radio`} className="text-sm">
         {label}
       </label>
       {isEtc && (
@@ -104,8 +102,8 @@ type ConsultRadioProps = {
 
 const ConsultRadio = ({ value, onChange }: ConsultRadioProps) => {
   // 기타 항목의 현재 텍스트 추출
-  const etcValue = value.startsWith("기타: ")
-    ? value.replace("기타: ", "")
+  const etcValue = value.startsWith("Бусад: ")
+    ? value.replace("Бусад: ", "")
     : "";
 
   const handleRadioChange = (
@@ -120,11 +118,11 @@ const ConsultRadio = ({ value, onChange }: ConsultRadioProps) => {
   };
 
   return (
-    <div className="mb-4 grid grid-cols-2 gap-y-2">
+    <div className="mb-4 flex flex-col gap-y-2">
       <div className="col-span-2 mb-2">
         <p className="">
-          <span className="font-bold">상담희망분야 (1순위)</span>{" "}
-          <span className="font-[#f2f2f2] text-[10px]">(필수)</span>
+          <span className="font-bold">Зөвлөгөө авах чиглэл (1 дүгээрт)</span>{" "}
+          <span className="font-[#f2f2f2] text-[10px]">(Заавал)</span>
         </p>
       </div>
       {CONSULT_ITEM.map((item) => (

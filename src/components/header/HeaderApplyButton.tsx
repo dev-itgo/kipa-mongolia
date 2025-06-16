@@ -9,7 +9,7 @@ const HeaderApplyButton = () => {
 
   return (
     <button className="cursor-pointer text-white" onClick={handleApplyClick}>
-      <span>지금 신청하기</span>
+      <span>Одоо бүртгүүлэх</span>
     </button>
   );
 };

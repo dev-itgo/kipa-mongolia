@@ -68,7 +68,7 @@ const PaymentPage = () => {
   };
 
   const handleConsult1Change = (value: string, etcText?: string) => {
-    if (value === "기타: ") {
+    if (value === "Бусад: ") {
       if (etcText) {
         setEtcText1(etcText);
         setConsult1(value + etcText);
@@ -89,28 +89,28 @@ const PaymentPage = () => {
   ) => {
     if (checked) {
       // 기타가 이미 있는지 확인 - consult23에서 확인해야 함
-      const hasEtc = consult23.some((item) => item.startsWith("기타: "));
+      const hasEtc = consult23.some((item) => item.startsWith("Бусад: "));
 
-      if (value === "기타: " && !hasEtc) {
+      if (value === "Бусад: " && !hasEtc) {
         if (etcText) {
           setEtcText23(etcText);
           setConsult23([...consult23, value + etcText]);
         } else {
           setConsult23([...consult23, value]);
         }
-      } else if (value === "기타: " && hasEtc && etcText) {
+      } else if (value === "Бусад: " && hasEtc && etcText) {
         // 기존 기타 항목을 업데이트
         const updatedConsult23 = consult23.map((item) =>
-          item.startsWith("기타: ") ? value + etcText : item,
+          item.startsWith("Бусад: ") ? value + etcText : item,
         );
         setEtcText23(etcText);
         setConsult23(updatedConsult23);
-      } else if (value !== "기타: ") {
+      } else if (value !== "Бусад: ") {
         setConsult23([...consult23, value]);
       }
     } else {
-      if (value === "기타: ") {
-        setConsult23(consult23.filter((item) => !item.startsWith("기타: ")));
+      if (value === "Бусад: ") {
+        setConsult23(consult23.filter((item) => !item.startsWith("Бусад: ")));
         setEtcText23("");
       } else {
         setConsult23(consult23.filter((item) => item !== value));
@@ -123,12 +123,13 @@ const PaymentPage = () => {
 
     // Validate consult1 (radio button - required)
     if (!consult1) {
-      newErrors.consult1 = "상담 내용을 선택해주세요.";
+      newErrors.consult1 = "Зөвлөгөө авах чиглэл сонгоно уу.";
     }
 
     // Validate consult23 (checkbox - at least one required)
     if (!consult23 || consult23.length === 0) {
-      newErrors.consult23 = "상담 내용을 최소 1개 이상 선택해주세요.";
+      newErrors.consult23 =
+        "Хамгийн багадаа нэг зөвлөгөөний сэдвийг сонгоно уу.";
     }
 
     setErrors(newErrors);
@@ -138,11 +139,11 @@ const PaymentPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData) {
-      toast.error("데이터를 불러오는데 실패했습니다.");
+      toast.error("Мэдээлэл ачаалахад алдаа гарлаа.");
       return;
     }
     if (!isAgree) {
-      toast.error("약관에 동의해주세요.");
+      toast.error("Үйлчилгээний нөхцлийг зөвшөөрнө үү.");
       return;
     }
 
@@ -165,8 +166,11 @@ const PaymentPage = () => {
       etcText23,
     };
 
+    // Update sessionStorage with complete form data before navigation
+    sessionStorage.setItem("formData", JSON.stringify(completeFormData));
+
     await postForm(completeFormData);
-    toast.success("신청이 완료되었습니다.", {
+    toast.success("Өргөдөл амжилттай бүртгэгдлээ.", {
       duration: 5000,
     });
     router.push("/payment/complete");
@@ -176,7 +180,7 @@ const PaymentPage = () => {
     return (
       <div className="container mx-auto max-w-md">
         <div className="flex flex-col gap-10 p-4">
-          <h1 className="text-2xl font-bold">신청 페이지</h1>
+          {/* <h1 className="text-2xl font-bold">신청 페이지</h1> */}
           <div className="rounded-lg bg-[#181818] p-6">
             <div className="animate-pulse space-y-4">
               <div className="h-4 w-3/4 rounded bg-gray-700"></div>
@@ -224,12 +228,14 @@ const PaymentPage = () => {
   return (
     <div className="container mx-auto max-w-md">
       <div className="mb-5 flex flex-col gap-10 p-4">
-        <h1 className="text-2xl font-bold">결제 페이지</h1>
+        {/* <h1 className="text-2xl font-bold">결제 페이지</h1> */}
         <ConsultFormData formData={{ ...formData!, consult1, consult23 }} />
 
         {/* 상담 분야 선택 섹션 */}
         <div className="rounded-lg bg-[#181818] p-6">
-          <h2 className="mb-4 text-xl font-bold">상담 분야 선택</h2>
+          <h2 className="mb-4 text-xl font-bold">
+            Зөвлөгөө авах чиглэлээ сонгоно уу
+          </h2>
           <div className="space-y-4">
             <div>
               <ConsultRadio value={consult1} onChange={handleConsult1Change} />
@@ -250,40 +256,33 @@ const PaymentPage = () => {
         </div>
 
         <div className="rounded-lg bg-[#181818] p-6 font-bold">
-          <h2 className="mb-4 text-xl">예약금 입금 안내</h2>
+          <h2 className="mb-4 text-xl">Зөвлөгөөний барьцаа төлбөрийн тухай</h2>
           <p className="mb-4">
-            ✉️ 입금 계좌 정보: <br />
-            입금 계좌 정보 : Khan Bank 5133150834 (Ж. Цэнгэлмаа)
+            ✉️ Шилжүүлэх данс: <br />
+            Хаан банк 5133150834 (Ж. Цэнгэлмаа)
             <br />
-            입금 금액 : ₮50,000 MNT 계좌입금 할 때, 이름/전화번호/예약시간을
-            작성해서 보내주셔야 합니다.
+            Барьцаа төлбөрийн дүн : ₮50,000 MNT Гүйлгээний утга : Овог нэр /
+            Утасны дугаар/ Зөвлөгөө авах цаг бичнэ үү.
           </p>
-          <h3>✅ 입금 유의사항</h3>
+          {/* <h3>✅ 입금 유의사항</h3> */}
           <ul className="list-disc space-y-2 pl-5">
             <li className="">
-              입금자명 기준으로 예약이 확인되며, 입금 순서에 따라 상담 시간이
-              배정됩니다.
+              Захиалга утга дээрх нэрээр баталгаажна, Төлбөрийн дарааллаар цаг
+              хуваарилна.
             </li>
             <li className="">
-              예약금은 상담회 당일 노쇼 방지를 위한 용도이며, 참석 시 전액
-              환불됩니다.
+              Зөвлөгөөнд ирсэн тохиолдолд 100% буцаан олгоно.
             </li>
             <li className="">
-              상담회 미참석 시 예약금은 환불되지 않으니 이 점 꼭 유의해 주세요.
+              Ирээгүй тохиолдолд төлбөр буцаагдахгүйг анхаарна уу.
             </li>
           </ul>
           <p className="mt-4">
-            입금 후, 반드시 페이스북 메시지로 입금 안내 메시지를 보내주세요.
-            <br />
-            👉{" "}
-            <a
-              href="https://www.facebook.com/profile.php?id=61574271616315&locale=ko_KR"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#00b0fb] underline"
-            >
-              KIPA 몽골 페이스북 링크
-            </a>
+            Урьдчилгаа төлбөр орсон тохиолдолд Захиалгыг баталгаажуулсан мессеж
+            илгээнэ. <br />
+            Баталгаажуулах мессеж нь орлого баталгаажсаны дараа дарааллаар
+            илгээгдэнэ, Үүнийг баталгаажуулахад тодорхой хугацаа шаардагдаж
+            болохыг анхаарна уу.
           </p>
         </div>
       </div>
@@ -298,10 +297,8 @@ const PaymentPage = () => {
               required
             />
             <Label htmlFor="agree-check" className="ml-2 text-sm text-white">
-              <span className="text-xs">
-                위 내용을 확인했으며 신청에 동의합니다
-              </span>
-              <span className="text-[10px] text-gray-400"> (필수)</span>
+              <span className="text-xs">Агуулга хадгалагдлаа</span>
+              <span className="text-[10px] text-gray-400"> (Заавал)</span>
             </Label>
           </div>
         </div>
@@ -315,14 +312,14 @@ const PaymentPage = () => {
                 : "cursor-not-allowed bg-gray-500"
             }`}
           >
-            신청하기
+            Бүртгүүлэх
           </button>
           <button
             type="button"
             className="mt-3 block w-full cursor-pointer p-3 text-center font-bold"
             onClick={handleBack}
           >
-            다시 작성하기
+            Дахин бөглөх
           </button>
         </form>
       </div>

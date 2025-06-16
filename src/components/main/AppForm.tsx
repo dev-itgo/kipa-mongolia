@@ -30,35 +30,36 @@ const AppForm = () => {
 
     // Validate name
     if (!data.name) {
-      newErrors.name = "이름을 입력해주세요.";
+      newErrors.name = "Нэрээ оруулна уу.";
     } else if (!/^[^0-9]{2,50}$/.test(data.name)) {
-      newErrors.name = "이름은 2-50자의 문자만 입력 가능합니다. (숫자 제외)";
+      newErrors.name =
+        "Нэрийг 2-50 тэмдэгтээр, зөвхөн үсгээр оруулна уу. (тоо оруулах боломжгүй)";
     }
 
     // Validate age
     if (!data.birth) {
-      newErrors.birth = "생년월일을 입력해주세요.";
+      newErrors.birth = "Төрсөн огноогоо оруулна уу.";
     } else if (
       !/^\d{4}\/((0[1-9])|(1[0-2]))\/((0[1-9])|([12][0-9])|(3[01]))$/.test(
         data.birth,
       )
     ) {
       newErrors.birth =
-        "생년월일은 YYYY/MM/DD 형식으로 입력해주세요. (ex.1989/10/12)";
+        "Төрсөн огноог YYYY/MM/DD дараалалаар оруулна уу. (жишээ: 1989/10/12)";
     }
 
     // Validate contact
     if (!data.contact) {
-      newErrors.contact = "연락처를 입력해주세요.";
+      newErrors.contact = "Холбогдох утасны дугаараа оруулна уу.";
     } else if (
       !/^\+?[0-9-]{4,20}$/.test(data.contact) &&
       !/^[a-zA-Z0-9._-]{4,20}$/.test(data.contact)
     ) {
-      newErrors.contact = "올바른 전화번호 형식을 입력해주세요.";
+      newErrors.contact = "утасны дугаарын форматаар оруулна уу.";
     }
 
     if (time === "") {
-      newErrors.time = "상담 요청 시간을 선택해주세요.";
+      newErrors.time = "Зөвлөгөө авах хүсэлтэй цагийн хуваарийг сонгоно уу.";
     }
 
     setErrors(newErrors);
@@ -98,7 +99,7 @@ const AppForm = () => {
       router.push("/payment");
     } catch (error) {
       console.error("Error redirecting to payment:", error);
-      toast.error("페이지 이동 중 오류가 발생했습니다. 다시 시도 해주세요.");
+      toast.error("Error redirecting to payment.");
     } finally {
       setIsSubmitting(false);
     }
@@ -110,11 +111,11 @@ const AppForm = () => {
       id="app-form"
     >
       <h3 className="mb-4 text-lg font-bold break-keep md:text-2xl">
-        지금 신청 하면 사은품 증정 및 참가비 무료
+        Одоо захиалга хийсэн тохиолдолд зөвлөгөө үнэ төлбөргүй + гарын бэлэгтэй
       </h3>
       <form onSubmit={handleSubmit}>
         <SelectBox
-          label="상담 요청 시간"
+          label="Зөвлөгөө авах цаг : 10:00-21:00"
           name="time"
           defaultValue=""
           error={errors.time}
@@ -123,15 +124,15 @@ const AppForm = () => {
         />
         <TextInputBox
           type="text"
-          label="이름"
+          label="Овог нэр"
           name="name"
-          placeholder="예약자와 입금자명이 일치해야 합니다"
+          placeholder="шилжүүлэгчийн нэртэй ижил байх"
           required
           error={errors.name}
         />
         <TextInputBox
           type="text"
-          label="생년월일"
+          label="Төрсөн он/сар/өдөр"
           name="birth"
           placeholder="(ex.1989/10/12)"
           required
@@ -139,7 +140,7 @@ const AppForm = () => {
         />
         <TextInputBox
           type="text"
-          label="연락처"
+          label="Утас"
           name="contact"
           placeholder="(ex.00000000)"
           required
@@ -147,9 +148,9 @@ const AppForm = () => {
         />
         <TextInputBox
           type="text"
-          label="비상연락망 (ex. Kipa-fair)"
+          label="Яаралтай үед холбогдох мэдээлэл"
           name="contact2"
-          placeholder="(페이스북 계정명/페이스북 링크)"
+          placeholder="fb нэр / fb линк"
         />
 
         <button
@@ -159,7 +160,7 @@ const AppForm = () => {
             isSubmitting ? "cursor-not-allowed opacity-50" : ""
           }`}
         >
-          {isSubmitting ? "처리 중..." : "신청하기"}
+          {isSubmitting ? "Боловсруулж байна…" : "Бүртгүүлэх"}
         </button>
       </form>
     </aside>

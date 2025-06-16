@@ -68,14 +68,22 @@ const Footer = () => {
       </div>
       <div className="text-xs text-[#F2F2F2]">
         <ul className="mb-1 flex flex-wrap gap-2">
-          <li>대표 : 이영식 &nbsp;&nbsp;|</li>
-          <li>개인정보보호책임자 : 김재민&nbsp;&nbsp;|</li>
-          <li>사업자등록번호 : 533-86-03215</li>
+          <li>Захирал: И Ён Шиг &nbsp;&nbsp;|</li>
+          <li>
+            Хувийн мэдээлэл хамгаалах хариуцсан хүн: Ким Жэ Мин гэх
+            мэт.&nbsp;&nbsp;|
+          </li>
+          <li>
+            Business registration number: 533-86-03215 (Republic of Korea)
+          </li>
         </ul>
         <ul className="mb-1 flex flex-wrap gap-2">
-          <li>통신판매업 신고번호 : 제2025-경기안산-2005호&nbsp;&nbsp;|</li>
           <li>
-            주소 : 203-80, 2F, 54 Gwangdeokseo-ro, Danwon-gu, Ansan-si,
+            Mail order sales registration number: 제2025-경기안산-2005호
+            (Republic of Korea) &nbsp;&nbsp;|
+          </li>
+          <li>
+            Address : 203-80, 2F, 54 Gwangdeokseo-ro, Danwon-gu, Ansan-si,
             Gyeonggi-do
           </li>
         </ul>

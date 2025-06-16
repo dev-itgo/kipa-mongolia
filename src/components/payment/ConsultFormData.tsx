@@ -8,31 +8,33 @@ type ConsultFormDataProps = {
 const ConsultFormData = ({ formData }: ConsultFormDataProps) => {
   return (
     <div className="rounded-lg bg-[#181818] p-6">
-      <h2 className="mb-4 text-xl font-bold">신청 정보</h2>
+      <h2 className="mb-4 text-xl font-bold">Бүртгэлийн мэдээлэл</h2>
       <div className="space-y-4">
         <div>
-          <span className="font-bold">상담 요청 시간:</span>{" "}
+          <span className="font-bold">Зөвлөгөө авах цаг:</span>{" "}
           <span className="rounded-full bg-gray-700 px-3 py-1 text-sm">
             {formData.time}
           </span>
         </div>
         <div>
-          <span className="font-bold">이름:</span> {formData.name}
+          <span className="font-bold">Овог нэр:</span> {formData.name}
         </div>
         <div>
-          <span className="font-bold">생년월일:</span> {formData.birth}
+          <span className="font-bold">Төрсөн он/сар/өдөр:</span>{" "}
+          {formData.birth}
         </div>
         <div>
-          <span className="font-bold">연락처:</span> {formData.contact}
+          <span className="font-bold">Утас:</span> {formData.contact}
         </div>
         <div>
-          <span className="font-bold">비상연락망:</span> {formData.contact2}
+          <span className="font-bold">Яаралтай үед холбогдох мэдээлэл:</span>{" "}
+          {formData.contact2}
         </div>
         {formData.consult1 && (
-          <div>
-            <span className="font-bold">상담 요청 분야 (1순위):</span>{" "}
+          <div className="mt-2 flex flex-wrap gap-2">
+            <span className="font-bold">Зөвлөгөө авах чиглэл (1 дүгээрт):</span>{" "}
             <span className="rounded-full bg-gray-700 px-3 py-1 text-sm">
-              {formData.consult1 === "기타: " && formData.etcText1
+              {formData.consult1 === "Бусад: " && formData.etcText1
                 ? `${formData.consult1}${formData.etcText1}`
                 : formData.consult1}
             </span>
@@ -40,7 +42,9 @@ const ConsultFormData = ({ formData }: ConsultFormDataProps) => {
         )}
         {formData.consult23 && formData.consult23.length > 0 && (
           <div>
-            <span className="font-bold">상담 요청 분야 (2,3순위):</span>{" "}
+            <span className="font-bold">
+              Зөвлөгөө авах чиглэл(2,3 дугаарт):
+            </span>{" "}
             <div className="mt-2 flex flex-wrap gap-2">
               {formData.consult23.map((area, index) => (
                 <span

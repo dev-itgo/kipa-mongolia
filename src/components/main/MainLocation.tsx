@@ -8,7 +8,7 @@ const MainLocation = () => {
   return (
     <div className="mb-20">
       <h3 className="mb-8 text-center text-xl font-bold md:text-2xl">
-        상담회 진행 장소
+        Зөвлөгөөн болох газар
       </h3>
 
       <MainPointSwiper images={LOCATIONS_IMAGES_DATA} />
@@ -32,14 +32,14 @@ const MainLocation = () => {
               rel="noopener noreferrer"
               className="underline"
             >
-              블루스카이 호텔
+              Blue Sky зочид буудал
             </a>{" "}
-            제이드홀
+            Jade танхимд
           </h4>
         </div>
         <div className="flex-1">
           <p className="text-sm text-[#f2f2f2] md:text-[16px]">
-            주소: Энх Тайваны Өргөн Чөлөө 17 Блю Скай Цамхаг, СБД - 1 хороо,
+            Энх Тайваны Өргөн Чөлөө 17 Блю Скай Цамхаг, СБД - 1 хороо,
             Улаанбаатар 14240
           </p>
           <div className="mt-4 flex gap-2">
@@ -50,7 +50,7 @@ const MainLocation = () => {
               className="flex cursor-pointer items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-bold text-black hover:bg-neutral-100"
             >
               <MdCallSplit />
-              길찾기
+              Газрын зураг харах
             </a>
             <MainLocationCopyBtn />
           </div>
