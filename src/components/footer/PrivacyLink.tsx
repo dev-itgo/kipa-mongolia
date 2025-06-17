@@ -22,7 +22,7 @@ const PrivacyLink = () => {
       <PolicyModal
         open={isPolicyModalOpen}
         setOpen={setIsPolicyModalOpen}
-        title="개인정보처리방침"
+        title="ХУВИЙН МЭДЭЭЛЭЛ БОЛОВСРУУЛАХ БОДЛОГО"
         onAgree={() => setIsPolicyModalOpen(false)}
         onReject={() => setIsPolicyModalOpen(false)}
         isFooter

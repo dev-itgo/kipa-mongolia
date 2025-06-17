@@ -22,7 +22,7 @@ const TermsLink = () => {
       <PolicyModal
         open={isModalOpen}
         setOpen={setIsModalOpen}
-        title="이용약관"
+        title="АШИГЛАЛТЫН НӨХЦӨЛ"
         onAgree={() => setIsModalOpen(false)}
         onReject={() => setIsModalOpen(false)}
         isFooter

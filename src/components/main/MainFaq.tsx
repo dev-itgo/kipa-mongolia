@@ -7,7 +7,7 @@ const MainFaq = () => {
   const rightColumn = FAQ_PART1.slice(midPoint);
 
   return (
-    <div className="mb-24">
+    <div className="mb-24" id="faq">
       <div className="mb-14 text-center">
         <h3 className="mb-4 text-xl font-bold md:text-2xl">FAQ</h3>
         {/* <p className="text-sm text-[#f2f2f2f] md:text-[16px]">

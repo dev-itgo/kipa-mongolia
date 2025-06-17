@@ -5,6 +5,7 @@ import { SiFacebook } from "react-icons/si";
 import { SiNaver } from "react-icons/si";
 import PrivacyLink from "./PrivacyLink";
 import TermsLink from "./TermsLink";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -23,19 +24,13 @@ const Footer = () => {
                 <PrivacyLink />
               </li>
               <li>
-                <a href="">Company Info</a>
+                <Link href="">Company Info</Link>
               </li>
               <li>
-                <a href="">Refund Policy</a>
+                <Link href="">Notice</Link>
               </li>
               <li>
-                <a href="">Notice</a>
-              </li>
-              <li>
-                <a href="">FAQ</a>
-              </li>
-              <li>
-                <a href="">Career</a>
+                <Link href="#faq">FAQ</Link>
               </li>
             </ul>
           </div>
@@ -88,9 +83,9 @@ const Footer = () => {
           </li>
         </ul>
         <ul className="mb-1 flex flex-wrap gap-2">
-          <li>TEL : +82-70-8065-3034&nbsp;&nbsp;|</li>
+          <li>TEL : +82 10-3971-4185&nbsp;&nbsp;|</li>
           <li>
-            E-MAIL : <a href="mailto:info@it-go.kr">info@it-go.kr</a>
+            E-MAIL : <a href="mailto:ops@it-go.kr">ops@it-go.kr</a>
           </li>
         </ul>
       </div>
