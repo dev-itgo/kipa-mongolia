@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { FormData } from "@/components/main/AppForm";
 import { useRouter } from "next/navigation";
-import ConsultFormData from "@/components/payment/ConsultFormData";
+import ConsultFormComplete from "@/components/payment/ConsultFormComplete";
 
 const PaymentCompletePage = () => {
   const router = useRouter();
@@ -65,28 +64,38 @@ const PaymentCompletePage = () => {
     <div className="container mx-auto max-w-md">
       <div className="mb-5 flex flex-col gap-10 p-4">
         {/* <h1 className="text-2xl font-bold">Өргөдөл амжилттай бүртгэгдлээ.</h1> */}
-        <ConsultFormData formData={formData} />
+        <ConsultFormComplete formData={formData} />
         <div className="rounded-lg bg-[#181818] p-6">
-          <p className="mb-4">Зөвлөгөө авах хүсэлт амжилттай илгээгдлээ.</p>
-          <p className="mb-4">
-            Зөвлөгөөний урьдчилгаа төлбөр баталгаажсаны дараа Захиалга
-            баталгаажсан тухай мессеж авснаар эцэслэн баталгаажна. <br />
-            Хэрэв төлбөр орж баталгаажаагүй бол зөвлөгөө автоматаар цуцлагдана.
-          </p>
-          <p className="mb-4">
-            Бүх орлого бүрэн хянагдаж, Дарааллаар мэдээлэл хүргэгдэж байна.{" "}
-            <br />
-            Баталгаажуулахад тодорхой хугацаа шаардагдаж болзошгүй ч Та тайван
-            хүлээнэ үү, баярлалаа.
-          </p>
+          <h3 className="mb-3 font-bold">
+            ✅ Захиалга утга дээрх нэрээр баталгаажна, Төлбөрийн дарааллаар цаг
+            хуваарилна.
+          </h3>
+          <ul className="list-disc space-y-2 pl-5">
+            <li className="">
+              Зөвлөгөөнд ирсэн тохиолдолд 100% буцаан олгоно.
+            </li>
+            <li className="">
+              Ирээгүй тохиолдолд төлбөр буцаагдахгүйг анхаарна уу.
+            </li>
+            <li className="">
+              Фэйсбүүк чатаар Барьцаа төлбөр явуулсан мэдээлэл явуулбал цаг
+              баталгаажуулаад эргээд хэлэх болно.
+            </li>
+            <li className="">
+              Гүйлгээ хийгээд, Заавал Фэйсбүүк чатаар зургийг нь явуулж
+              баталгаажуулна уу.
+            </li>
+          </ul>
         </div>
         <div className="">
-          <Link
-            href="/"
+          <a
+            href="https://www.facebook.com/profile.php?id=61574271616315"
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-3 block w-full cursor-pointer bg-white p-3 text-center font-bold text-black"
           >
-            Нүүр хуудас руу буцах
-          </Link>
+            KiPAгийн албан ёсны Facebook пэйжруу баримтын зургаа явуулах
+          </a>
         </div>
       </div>
     </div>
