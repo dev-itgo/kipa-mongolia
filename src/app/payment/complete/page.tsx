@@ -1,13 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FormData } from "@/components/main/AppForm";
 import { useRouter } from "next/navigation";
+import ReactPixel from "react-facebook-pixel";
+import { FormData } from "@/components/main/AppForm";
 import ConsultFormComplete from "@/components/payment/ConsultFormComplete";
 
 const PaymentCompletePage = () => {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleViewContent = () => {
+    ReactPixel.track("ViewContent");
+  };
 
   useEffect(() => {
     // Get form data from sessionStorage
@@ -93,6 +98,7 @@ const PaymentCompletePage = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 block w-full cursor-pointer bg-white p-3 text-center font-bold text-black"
+            onClick={handleViewContent}
           >
             KiPAгийн албан ёсны Facebook пэйжруу баримтын зургаа явуулах
           </a>

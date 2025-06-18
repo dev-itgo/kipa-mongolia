@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import { Noto_Sans_KR, Montserrat } from "next/font/google";
-import "./globals.css";
+import PixelProvider from "@/components/providers/PixelProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
+import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
@@ -33,9 +35,39 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="mn">
+      <head>
+        {/* Meta Pixel Code */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '730401369458359');
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=730401369458359&ev=PageView&noscript=1"
+            alt="Meta Pixel Tracker"
+          />
+        </noscript>
+        {/* End Meta Pixel Code */}
+      </head>
       <body
         className={`${notoSansKR.variable} ${montserrat.variable} antialiased`}
       >
+        <PixelProvider />
         <ToastProvider />
         {children}
       </body>

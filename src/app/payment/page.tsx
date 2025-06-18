@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import ReactPixel from "react-facebook-pixel";
 import { Checkbox, Label } from "flowbite-react";
 import { FormData } from "@/components/main/AppForm";
 import postForm from "@/utils/postForm";
@@ -173,6 +174,7 @@ const PaymentPage = () => {
     toast.success("Өргөдөл амжилттай бүртгэгдлээ.", {
       duration: 5000,
     });
+    ReactPixel.track("CompleteRegistration");
     router.push("/payment/complete");
   };
 

@@ -1,9 +1,11 @@
 "use client";
 import { scrollToAppForm } from "@/utils/scroll";
+import ReactPixel from "react-facebook-pixel";
 
 const MainCouponApplyButton = () => {
   const handleApplyClick = () => {
     scrollToAppForm();
+    ReactPixel.track("Lead");
   };
   return (
     <button

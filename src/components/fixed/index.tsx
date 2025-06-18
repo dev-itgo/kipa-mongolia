@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { scrollToAppForm } from "@/utils/scroll";
 import toast from "react-hot-toast";
+import ReactPixel from "react-facebook-pixel";
 
 const FixedBanner = () => {
   useEffect(() => {
@@ -42,6 +43,7 @@ const FixedBanner = () => {
 
   const handleApplyClick = () => {
     scrollToAppForm();
+    ReactPixel.track("Lead");
   };
 
   return (
