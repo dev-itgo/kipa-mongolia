@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import ReactPixel from "react-facebook-pixel";
+import { track } from "@/utils/pixel";
 import TextInputBox from "@/components/form/TextInputBox";
 import SelectBox from "../form/SelectBox";
 
@@ -77,7 +77,7 @@ const AppForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    ReactPixel.track("Lead");
+    track("Lead");
 
     const formData = new FormData(e.currentTarget);
     const data: FormData = {

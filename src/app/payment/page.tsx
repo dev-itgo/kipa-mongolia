@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import ReactPixel from "react-facebook-pixel";
 import { Checkbox, Label } from "flowbite-react";
 import { FormData } from "@/components/main/AppForm";
 import postForm from "@/utils/postForm";
 import ConsultFormData from "@/components/payment/ConsultFormData";
 import ConsultRadio from "@/components/form/ConsultRadio";
 import ConsultCheckbox from "@/components/form/ConsultCheckbox";
+import { track } from "@/utils/pixel";
 
 const PaymentPage = () => {
   const router = useRouter();
@@ -174,7 +174,7 @@ const PaymentPage = () => {
     toast.success("Өргөдөл амжилттай бүртгэгдлээ.", {
       duration: 5000,
     });
-    ReactPixel.track("CompleteRegistration");
+    track("CompleteRegistration");
     router.push("/payment/complete");
   };
 

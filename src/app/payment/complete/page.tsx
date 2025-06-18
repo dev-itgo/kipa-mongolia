@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import ReactPixel from "react-facebook-pixel";
+import { track } from "@/utils/pixel";
 import { FormData } from "@/components/main/AppForm";
 import ConsultFormComplete from "@/components/payment/ConsultFormComplete";
 
@@ -11,7 +11,7 @@ const PaymentCompletePage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleViewContent = () => {
-    ReactPixel.track("ViewContent");
+    track("ViewContent");
   };
 
   useEffect(() => {
