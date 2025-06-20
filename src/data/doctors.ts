@@ -1,9 +1,9 @@
 export const DOCTORS = [
   {
     hospital: "EPIC",
-    name: "DR. HOËH ЖУН",
+    name: "DR. HOËH ЖYН",
     surgery: "",
-    desc: "Нуд, хамрын гоо сайхны мэс засал",
+    desc: "Нyд, хамрын гоо сайхны мэс засал",
     src: "/doctors/epic-dr-noh.webp",
   },
   {
@@ -15,9 +15,9 @@ export const DOCTORS = [
   },
   {
     hospital: "THE PRIDE",
-    name: "DR. И ДОН ХУН",
+    name: "DR. И ДОН ХYН",
     surgery: "",
-    desc: "Нуурний хэлбэр засах ясны мэс засал",
+    desc: "Нуyрний хэлбэр засах ясны мэс засал",
     src: "/doctors/pride-dr-donghoon.webp",
   },
   {
