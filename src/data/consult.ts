@@ -6,16 +6,16 @@ type ConsultItem = {
 };
 
 const CONSULT_ITEM: ConsultItem[] = [
-  {
-    label: "Зовхи гоо сайхны мэс засал",
-    id: "eye",
-    name: "eye",
-  },
-  {
-    label: "Хамар гоо сайхны мэс засал",
-    id: "nose",
-    name: "nose",
-  },
+  // {
+  //   label: "Зовхи гоо сайхны мэс засал",
+  //   id: "eye",
+  //   name: "eye",
+  // },
+  // {
+  //   label: "Хамар гоо сайхны мэс засал",
+  //   id: "nose",
+  //   name: "nose",
+  // },
   {
     label: "Эмэгтэйчүүд (эмэгтэйчүүдийн пластик мэс засал)",
     id: "woman",
@@ -26,11 +26,11 @@ const CONSULT_ITEM: ConsultItem[] = [
     id: "man",
     name: "man",
   },
-  {
-    label: "Арьс өргөх мэс засал",
-    id: "lifting",
-    name: "lifting",
-  },
+  // {
+  //   label: "Арьс өргөх мэс засал",
+  //   id: "lifting",
+  //   name: "lifting",
+  // },
   {
     label: "Нүүрний хэлбэр засах ясны мэс засал",
     id: "faceline",
